@@ -16,16 +16,12 @@ public class Menu {
     }
 
     public void displayOptions() {
-    	while (true) {
-    		 System.out.println("\n ~ Bank Menu ~");
-             System.out.println("1. Deposit");
-             System.out.println("2. Withdraw");
-             System.out.println("3. View Transaction History");
-             System.out.println("4. Check Current Balance");
-             // add more options here	
-             int userChoice = readIntFromPlayer();
-             processUserInput(userChoice);
-    	}
+		 System.out.println("\n ~ Bank Menu ~");
+         System.out.println("1. Deposit");
+         System.out.println("2. Withdraw");
+         System.out.println("3. View Transaction History");
+         System.out.println("4. Check Current Balance");
+         // add more options here	
     }
     
     private int readIntFromPlayer() {
@@ -58,7 +54,7 @@ public class Menu {
     	System.out.println("Please enter deposit amount: ");
         double amountToDeposit = keyboardInput.nextDouble();
         processDeposit(amountToDeposit);
-        System.out.println("You deposited into your account: $" + amountToDeposit);
+        System.out.println("You deposited $" + amountToDeposit + " into your account.");
     }
     
     public void processDeposit(double amount) {
@@ -69,7 +65,7 @@ public class Menu {
     	System.out.println("Please enter withdrawal amount: ");
         double amountToWithdraw = keyboardInput.nextDouble();
         processWithdrawal(amountToWithdraw);
-        System.out.println("You withdrew into your account: $" + amountToWithdraw);
+        System.out.println("You withdrew $" + amountToWithdraw + " from your account.");
     }
     
     public void processWithdrawal(double amount) {
@@ -78,6 +74,10 @@ public class Menu {
     
     public static void main(String[] args) {
 		Menu menu = new Menu();
-		menu.displayOptions();
+		while (true) {
+			menu.displayOptions();
+			int userChoice = menu.readIntFromPlayer();
+	        menu.processUserInput(userChoice);
+		}
 	}
 }

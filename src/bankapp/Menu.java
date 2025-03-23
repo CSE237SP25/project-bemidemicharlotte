@@ -22,6 +22,7 @@ public class Menu {
          System.out.println("3. View Transaction History");
          System.out.println("4. Check Current Balance");
          // add more options here	
+         System.out.println("5. Fixed Deposit");
     }
     
     private int readIntFromPlayer() {
@@ -45,6 +46,8 @@ public class Menu {
 	        case 4:
 	        	  // handle view account balance logic
 	            break;
+	        case 5:
+	        	handleInterest();
 	        default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and 4.");
 	    }
@@ -70,6 +73,20 @@ public class Menu {
     
     public void processWithdrawal(double amount) {
         theAccount.withdraw(amount);
+    }
+    
+    public void handleInterest() {
+    	theAccount.printTerm();
+    	double accountTerm=keyboardInput.nextDouble();
+    	theAccount.getDeposit();
+    	double accountDeposit=keyboardInput.nextDouble();
+    	processInterest(accountTerm, accountDeposit);
+    	System.out.println("You put $"+accountDeposit+"in fixed deposit for"+accountTerm+"month.")
+    	
+    }
+    
+    public void processInterest(double term, double deposit) {
+    	theAccount.processSelection(term, deposit);
     }
     
     public static void main(String[] args) {

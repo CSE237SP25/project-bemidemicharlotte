@@ -20,7 +20,7 @@ public class BankAccount {
 			 throw new IllegalArgumentException("Insufficient funds.");
 		} 
 		if (amount < 0) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
 		this.balance -= amount;
 	}

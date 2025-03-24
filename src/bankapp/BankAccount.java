@@ -42,6 +42,11 @@ public class BankAccount {
 		return this.balance;
 	}
 	
+	public double getFinalBalance(FixedDeposit fixedDeposit) {
+		return this.balance+fixedDeposit.getFinalDeposit();
+	}
+
+	
 	public int getTransactionCount() {
 	    return transactionHistory.size();
 	}

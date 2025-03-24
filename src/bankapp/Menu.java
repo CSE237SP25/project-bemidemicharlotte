@@ -40,9 +40,8 @@ public class Menu {
 	        case 2:
 	            handleWithdrawal();
 	            break;
-	        // add more cases here like view transaction history, account balance, etc.
 	        case 3:
-	            // handle view transaction logic
+	            handleViewTransaction();
 	            break;
 	        case 4:
 	        	  // handle view account balance logic
@@ -75,6 +74,10 @@ public class Menu {
     
     public void processWithdrawal(double amount) {
         theAccount.withdraw(amount);
+    }
+    
+    public void handleViewTransaction() {
+    	theAccount.viewTransactionHistory();
     }
 
     public void handleInterest() {

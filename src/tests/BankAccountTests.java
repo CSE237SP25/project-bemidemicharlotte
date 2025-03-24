@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import org.junit.jupiter.api.Test;
 
 import bankapp.BankAccount;
+import bankapp.FixedDeposit;
 
 public class BankAccountTests {
 
@@ -65,4 +66,20 @@ public class BankAccountTests {
 			assertTrue(e != null);
 		}
 	}
+	
+	@Test
+	public void testFinalBalance() {
+		// Step 1: Set up the account and deposit
+        BankAccount account = new BankAccount();
+        account.deposit(1000); 
+        // Step 2: Create and process a fixed deposit
+        FixedDeposit fd = new FixedDeposit();
+        fd.processSelection(1, 2000); 
+        double expectedFD = 2000 * Math.pow(1 + 0.0393, 7);
+        double expectedTotal = 1000 + expectedFD;
+        double actualTotal = account.getFinalBalance(fd);
+        // Step 3: Assert
+        assertEquals(expectedTotal, actualTotal, 0.01); 
+	}
+
 }

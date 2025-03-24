@@ -44,7 +44,7 @@ public class Menu {
 	            handleViewTransaction();
 	            break;
 	        case 4:
-	        	  // handle view account balance logic
+	        	handleTotalBalance();
 	            break;
 	        case 5:
 	        	handleInterest();
@@ -91,4 +91,15 @@ public class Menu {
     public void processInterest(int term, double deposit) {
     	fixedDeposit.processSelection(term, deposit);
     }
+    
+    public void handleTotalBalance() {
+    	FixedDeposit fd = new FixedDeposit();
+    	double accountFinalDeposit = theAccount.getFinalBalance(fd);
+    	System.out.println("Your final balance is $"+ accountFinalDeposit +".");
+    }
+    
+    public void processTotalBalance(FixedDeposit fd, double regularDeposit) {
+    	theAccount.getFinalBalance(fd);
+    }
+
 }

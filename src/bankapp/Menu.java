@@ -1,13 +1,15 @@
 package bankapp;
+
 import java.util.Scanner;
 
 public class Menu {
-
-    private BankAccount theAccount;
+	private BankAccount theAccount;
+	private FixedDeposit fixedDeposit;
     private Scanner keyboardInput;
 
     public Menu() {
         theAccount = new BankAccount();
+        fixedDeposit = new FixedDeposit();
         keyboardInput = new Scanner(System.in);
     }
     
@@ -21,10 +23,10 @@ public class Menu {
          System.out.println("2. Withdraw");
          System.out.println("3. View Transaction History");
          System.out.println("4. Check Current Balance");
-         // add more options here	
+         System.out.println("5. Fixed Deposit");
     }
     
-    private int readIntFromPlayer() {
+    public int readIntFromPlayer() {
 		System.out.println("Enter your choice: ");
 		int userChoice = keyboardInput.nextInt(); 
 		return userChoice;
@@ -45,8 +47,11 @@ public class Menu {
 	        case 4:
 	        	  // handle view account balance logic
 	            break;
+	        case 5:
+	        	handleInterest();
+	        	break;
 	        default:
-	            System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
 	    }
     }
 
@@ -71,13 +76,16 @@ public class Menu {
     public void processWithdrawal(double amount) {
         theAccount.withdraw(amount);
     }
+
+    public void handleInterest() {
+    	fixedDeposit.printTerm();
+    	int accountTerm = keyboardInput.nextInt();
+    	double accountDeposit = fixedDeposit.getDeposit();
+    	processInterest(accountTerm, accountDeposit);	
+    	System.out.println("You put $" + accountDeposit + " in fixed deposit for " + accountTerm + " month.");
+    }
     
-    public static void main(String[] args) {
-		Menu menu = new Menu();
-		while (true) {
-			menu.displayOptions();
-			int userChoice = menu.readIntFromPlayer();
-	        menu.processUserInput(userChoice);
-		}
-	}
+    public void processInterest(int term, double deposit) {
+    	fixedDeposit.processSelection(term, deposit);
+    }
 }

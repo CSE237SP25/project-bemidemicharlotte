@@ -17,12 +17,7 @@ public class FixedDepositTests {
 		cdAccount.processSelection(1, 10000);
 		double finalDeposit=cdAccount.getFinalDeposit();
 		
-		
-		//3. Verify retults
+		//3. Verify results
 		assertEquals(finalDeposit, 13097.4, 0.05);
-		
-		
 	}
-	
-
 }

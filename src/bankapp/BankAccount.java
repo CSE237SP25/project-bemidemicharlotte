@@ -50,9 +50,11 @@ public class BankAccount {
 		if (getTransactionCount() == 0) {
 			System.out.println("No recent transaction history");
 		}
-		System.out.println("Your Recent Transaction History:");
-		for (Transaction t: transactionHistory) {
-			t.showTransaction();
+		else {
+			System.out.println("Your Recent Transaction History:");
+			for (Transaction t: transactionHistory) {
+				t.showTransaction();
+			}
 		}
 	}
 }

@@ -62,4 +62,23 @@ public class BankAccount {
 			}
 		}
 	}
+
+	public void transferTo(BankAccount recipient, double amount) {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Transfer amount must be positive.");
+		}
+		if (this.balance < amount) {
+			throw new IllegalArgumentException("Insufficient funds.");
+		}
+
+		this.withdraw(amount);
+		recipient.deposit(amount);
+
+		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
+		String time = localDateFormat.format(new Date());
+
+		this.transactionHistory.add(new Transaction("Transfer Sent", amount, time));
+		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, time));
+	}
+
 }

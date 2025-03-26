@@ -1,85 +1,63 @@
-package tests;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+package bankapp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import bankapp.CreateAccount;
-import bankapp.UpdateAccount;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UpdateAccountTest {
 
+    private Map<Integer, List<Object>> accounts;
     private UpdateAccount updateAccount;
-    private int accountNumber;
 
     @BeforeEach
     public void setUp() {
-        // 1. Create objects to be tested
-        updateAccount = new UpdateAccount([]);
-
-        // 2. Create a test account
-        createAccount.setName("John Doe");
-        createAccount.setEmail("john.doe@example.com");
-        createAccount.setPhoneNumber("+1 123-456-7890");
+        accounts = new HashMap<>();
+        // Initialize dummy account with: name, phone number, email
+        accounts.put(123456789, new ArrayList<>(Arrays.asList("John Doe", "123-456-7890", "john@example.com")));
+        updateAccount = new UpdateAccount(accounts);
     }
 
     @Test
-    public void testValidAccountNumber() {
-        // 2. Call method being tested
-        boolean exists = updateAccount.validAccountNumber(accountNumber);
-
-        // 3. Verify result
-        assertTrue(exists);
+    public void testUpdateName_Valid() {
+        updateAccount.updateName(123456789, "Jane Smith");
+        assertEquals("Jane Smith", accounts.get(123456789).get(0));
     }
 
     @Test
-    public void testInvalidAccountNumber() {
-        assertTrue(!updateAccount.validAccountNumber(999999999));
+    public void testUpdatePhoneNumber_Valid() {
+        updateAccount.updatePhoneNumber(123456789, "(314) 555-7890");
+        assertEquals("(314) 555-7890", accounts.get(123456789).get(1));
     }
 
     @Test
-    public void testUpdateName() {
-        // 2. Call method being tested
-        updateAccount.updateName(accountNumber, "Jane Doe");
-
-        // 3. Verify result
-        List<Object> accountDetails = updateAccount.accounts.get(accountNumber);
-        assertEquals("Jane Doe", accountDetails.get(0));
+    public void testUpdatePhoneNumber_Invalid() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            updateAccount.updatePhoneNumber(123456789, "invalid-number");
+        });
+        assertEquals("Invalid phone number format.", exception.getMessage());
     }
 
     @Test
-    public void testUpdatePhoneNumber() {
-        // 2. Call method being tested
-        updateAccount.updatePhoneNumber(accountNumber, "+1 987-654-3210");
-
-        // 3. Verify result
-        List<Object> accountDetails = updateAccount.accounts.get(accountNumber);
-        assertEquals("+1 987-654-3210", accountDetails.get(1));
+    public void testUpdateEmail_Valid() {
+        updateAccount.updateEmail(123456789, "jane.smith@example.org");
+        assertEquals("jane.smith@example.org", accounts.get(12345).get(2));
     }
 
     @Test
-    public void testUpdateEmail() {
-        // 2. Call method being tested
-        updateAccount.updateEmail(accountNumber, "jane.doe@example.com");
-
-        // 3. Verify result
-        List<Object> accountDetails = updateAccount.accounts.get(accountNumber);
-        assertEquals("jane.doe@example.com", accountDetails.get(2));
+    public void testUpdateEmail_Invalid() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            updateAccount.updateEmail(123456789, "bad-email");
+        });
+        assertEquals("Invalid email format.", exception.getMessage());
     }
 
     @Test
-    public void testUpdateNonExistentAccount() {
-        try {
-            updateAccount.updateName(999999999, "Random User");
-            fail();
-        } catch (NullPointerException e) {
-            assertTrue(e != null);
-        }
+    public void testUpdateInvalidAccountNumber() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            updateAccount.updateName(999999999, "Someone");
+        });
+        assertEquals("Account number does not exist, please retry with a valid account number", exception.getMessage());
     }
 }

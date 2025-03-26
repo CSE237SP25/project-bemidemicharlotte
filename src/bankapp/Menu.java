@@ -216,13 +216,13 @@ public class Menu {
     	fixedDeposit.printTerm();
     	int accountTerm = keyboardInput.nextInt();
     	double accountDeposit = fixedDeposit.getDeposit();
-    	processInterest(accountTerm, accountDeposit);	
-    	System.out.println("You put $" + accountDeposit + " in fixed deposit for " + accountTerm + " month.");
+    	double accountCD = processInterest(accountTerm, accountDeposit);	
+    	System.out.println("You will eventually get $" + accountCD + " from the fixed deposit");
     }
     
-    public void processInterest(int term, double deposit) {
+    public double processInterest(int term, double deposit) {
     	fixedDeposit.processSelection(term, deposit);
-    	theAccount.getFinalBalance(fixedDeposit);
+    	return theAccount.getFinalBalance(fixedDeposit);
     }
     
     public void handleTotalBalance() {

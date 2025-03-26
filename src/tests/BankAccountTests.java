@@ -82,4 +82,47 @@ public class BankAccountTests {
         assertEquals(expectedTotal, actualTotal, 0.01); 
 	}
 
+	@Test
+	public void testSuccessfulTransfer() {
+		BankAccount sender = new BankAccount();
+		BankAccount receiver = new BankAccount();
+
+		sender.deposit(100);
+		sender.transferTo(receiver, 40);
+
+		assertEquals(60.0, sender.getCurrentBalance(), 0.005);
+		assertEquals(40.0, receiver.getCurrentBalance(), 0.005);
+	}
+
+	@Test
+	public void testTransferWithInsufficientFunds() {
+		BankAccount sender = new BankAccount();
+		BankAccount receiver = new BankAccount();
+
+		sender.deposit(30);
+
+		try {
+			sender.transferTo(receiver, 50);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Insufficient funds.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testTransferWithNegativeAmount() {
+		BankAccount sender = new BankAccount();
+		BankAccount receiver = new BankAccount();
+
+		sender.deposit(100);
+
+		try {
+			sender.transferTo(receiver, -20);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Transfer amount must be positive.", e.getMessage());
+		}
+	}
+
+
 }

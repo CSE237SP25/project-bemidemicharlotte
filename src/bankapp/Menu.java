@@ -24,6 +24,7 @@ public class Menu {
          System.out.println("3. View Transaction History");
          System.out.println("4. Check Current Balance");
          System.out.println("5. Fixed Deposit");
+        System.out.println("6. Transfer Between Accounts");
     }
     
     public int readIntFromPlayer() {
@@ -49,7 +50,10 @@ public class Menu {
 	        case 5:
 	        	handleInterest();
 	        	break;
-	        default:
+            case 6:
+                handleTransfer();
+                break;
+            default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
 	    }
     }
@@ -101,5 +105,21 @@ public class Menu {
     public void processTotalBalance(FixedDeposit fd, double regularDeposit) {
     	theAccount.getFinalBalance(fd);
     }
+    public void handleTransfer() {
+        System.out.println("Enter amount to transfer: ");
+        double amountToTransfer = keyboardInput.nextDouble();
+
+        BankAccount recipientAccount = new BankAccount();
+
+        try {
+            theAccount.transferTo(recipientAccount, amountToTransfer);
+            System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
+            System.out.println("Your new balance: $" + theAccount.getCurrentBalance());
+            System.out.println("Recipient balance: $" + recipientAccount.getCurrentBalance());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Transfer failed: " + e.getMessage());
+        }
+    }
+
 
 }

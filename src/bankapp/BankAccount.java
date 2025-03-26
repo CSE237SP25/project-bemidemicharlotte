@@ -20,9 +20,7 @@ public class BankAccount {
 			throw new IllegalArgumentException();
 		}
 		this.balance += amount;
-		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
-        String time = localDateFormat.format(new Date());
-		transactionHistory.add(new Transaction("Deposit", amount, time));
+		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime()));
 	}
 	
 	public void withdraw(double amount) {
@@ -33,17 +31,21 @@ public class BankAccount {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
 		this.balance -= amount;
-		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
-        String time = localDateFormat.format(new Date());
-		transactionHistory.add(new Transaction("Withdrawal", amount, time));
+		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime()));
 	}
 	
 	public double getCurrentBalance() {
 		return this.balance;
 	}
 	
+	public String getCurrentTime() {
+		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
+        return localDateFormat.format(new Date());
+	}
+	
 	public double getFinalBalance(FixedDeposit fixedDeposit) {
-		return this.balance+fixedDeposit.getFinalDeposit();
+		transactionHistory.add(new Transaction("Fixed Deposit", fixedDeposit.getFinalDeposit(), getCurrentTime()));
+		return this.balance + fixedDeposit.getFinalDeposit();
 	}
 
 	
@@ -74,11 +76,7 @@ public class BankAccount {
 		this.withdraw(amount);
 		recipient.deposit(amount);
 
-		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
-		String time = localDateFormat.format(new Date());
-
-		this.transactionHistory.add(new Transaction("Transfer Sent", amount, time));
-		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, time));
+		this.transactionHistory.add(new Transaction("Transfer Sent", amount, getCurrentTime()));
+		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, getCurrentTime()));
 	}
-
 }

@@ -222,6 +222,7 @@ public class Menu {
     
     public void processInterest(int term, double deposit) {
     	fixedDeposit.processSelection(term, deposit);
+    	theAccount.getFinalBalance(fixedDeposit);
     }
     
     public void handleTotalBalance() {

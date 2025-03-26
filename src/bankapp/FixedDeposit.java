@@ -29,7 +29,7 @@ public class FixedDeposit {
 	}
 
 	public double getDeposit() {
-		System.out.print("Please enter a deposit amount: $");
+		System.out.print("Please enter a fixed deposit amount: $");
 		return keyboardInput.nextDouble();
 	}
 

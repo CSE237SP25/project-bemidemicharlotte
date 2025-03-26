@@ -1,9 +1,6 @@
 package bankapp;
 import java.util.*;
 import java.util.Scanner;
-import bankapp.CreateAccount;
-import bankapp.UpdateAccount;
-
 
 
 public class Menu {
@@ -137,7 +134,6 @@ public class Menu {
                 System.out.println("Invalid choice. Please enter a number between 1 and 4.");
             }
         }
-
     }
 
     public void handleUpdateName(int accountNumber){
@@ -237,6 +233,7 @@ public class Menu {
     public void processTotalBalance(FixedDeposit fd, double regularDeposit) {
     	theAccount.getFinalBalance(fd);
     }
+    
     public void handleTransfer() {
         System.out.println("Enter amount to transfer: ");
         double amountToTransfer = keyboardInput.nextDouble();
@@ -252,6 +249,4 @@ public class Menu {
             System.out.println("Transfer failed: " + e.getMessage());
         }
     }
-
-
 }

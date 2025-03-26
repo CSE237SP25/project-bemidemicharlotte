@@ -1,8 +1,13 @@
-package bankapp;
+package tests;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import bankapp.UpdateAccount;
 
 import java.util.*;
 
@@ -42,7 +47,7 @@ public class UpdateAccountTest {
     @Test
     public void testUpdateEmail_Valid() {
         updateAccount.updateEmail(123456789, "jane.smith@example.org");
-        assertEquals("jane.smith@example.org", accounts.get(12345).get(2));
+        assertEquals("jane.smith@example.org", accounts.get(123456789).get(2));
     }
 
     @Test

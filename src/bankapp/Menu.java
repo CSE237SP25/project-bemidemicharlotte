@@ -24,7 +24,7 @@ public class Menu {
          System.out.println("3. View Transaction History");
          System.out.println("4. Check Current Balance");
          System.out.println("5. Fixed Deposit");
-        System.out.println("6. Transfer Between Accounts");
+         System.out.println("6. Transfer Between Accounts");
     }
     
     public int readIntFromPlayer() {
@@ -94,6 +94,7 @@ public class Menu {
     
     public void processInterest(int term, double deposit) {
     	fixedDeposit.processSelection(term, deposit);
+    	theAccount.getFinalBalance(fixedDeposit);
     }
     
     public void handleTotalBalance() {
@@ -105,6 +106,7 @@ public class Menu {
     public void processTotalBalance(FixedDeposit fd, double regularDeposit) {
     	theAccount.getFinalBalance(fd);
     }
+    
     public void handleTransfer() {
         System.out.println("Enter amount to transfer: ");
         double amountToTransfer = keyboardInput.nextDouble();
@@ -120,6 +122,4 @@ public class Menu {
             System.out.println("Transfer failed: " + e.getMessage());
         }
     }
-
-
 }

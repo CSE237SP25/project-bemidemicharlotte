@@ -25,6 +25,13 @@ What user stories do you intend to complete next iteration?
 
 * Log out from an account
 * View profile information
+* Setting a monthly budget
+* Delete an account
+* Search specific transaction history
+* Scheduled to send money
+* Manage money by specific plans
+* Update transaction history
+* Categorize money spending
 
 Is there anything that you implemented but doesn't currently work?
 

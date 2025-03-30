@@ -33,6 +33,7 @@ public class Menu {
          System.out.println("6. Transfer Between Accounts");
          System.out.println("7. Create Account");
          System.out.println("8. Update Account Information");
+         System.out.println("9. Logout");
     }
     
     public int readIntFromPlayer() {
@@ -51,7 +52,7 @@ public class Menu {
 	            handleWithdrawal();
 	            break;
 	        case 3:
-	            handleViewTransaction();
+	            theAccount.viewTransactionHistory();
 	            break;
 	        case 4:
 	        	handleTotalBalance();
@@ -68,6 +69,9 @@ public class Menu {
             case 8:
                 handleUpdateAccount();
                 break;
+            case 9:
+            	theAccount.logout(accounts);
+            	break;
             default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
 	    }
@@ -141,7 +145,7 @@ public class Menu {
         String name = keyboardInput.nextLine();
         try{
             this.accounts = updateAccount.updateName(accountNumber, name);
-            System.out.println("Please Find Below You Updated Information.");
+            System.out.println("Please Find Below Your Updated Information.");
             displayAccountDetails(accountNumber);
             System.out.println();
         } catch(java.lang.Exception e) {
@@ -155,7 +159,7 @@ public class Menu {
         String phoneNumber = keyboardInput.nextLine();
         try{
             this.accounts = updateAccount.updatePhoneNumber(accountNumber, phoneNumber);
-            System.out.println("Please Find Below You Updated Information.");
+            System.out.println("Please Find Below Your Updated Information.");
             displayAccountDetails(accountNumber);
             System.out.println();
         } catch(java.lang.Exception e) {
@@ -169,7 +173,7 @@ public class Menu {
         String email = keyboardInput.nextLine();
         try{
             this.accounts = updateAccount.updateEmail(accountNumber, email);
-            System.out.println("Please Find Below You Updated Information.");
+            System.out.println("Please Find Below Your Updated Information.");
             displayAccountDetails(accountNumber);
             System.out.println();
         } catch(java.lang.Exception e) {
@@ -208,10 +212,6 @@ public class Menu {
         theAccount.withdraw(amount);
     }
     
-    public void handleViewTransaction() {
-    	theAccount.viewTransactionHistory();
-    }
-
     public void handleInterest() {
     	fixedDeposit.printTerm();
     	int accountTerm = keyboardInput.nextInt();
@@ -229,10 +229,6 @@ public class Menu {
     	FixedDeposit fd = new FixedDeposit();
     	double accountFinalDeposit = theAccount.getFinalBalance(fd);
     	System.out.println("Your final balance is $"+ accountFinalDeposit +".");
-    }
-    
-    public void processTotalBalance(FixedDeposit fd, double regularDeposit) {
-    	theAccount.getFinalBalance(fd);
     }
     
     public void handleTransfer() {

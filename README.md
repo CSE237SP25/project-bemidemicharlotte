@@ -38,5 +38,5 @@ Is there anything that you implemented but doesn't currently work?
 Not really, we made all user stories we have to work well now.
 
 What commands are needed to compile and run your code from the command line (please provide a script that users can run to launch your program)?
-* javac -d out/ src/bankapp/*.java
-* java -cp out/ bankapp.Main
+
+``` ./script.sh ```

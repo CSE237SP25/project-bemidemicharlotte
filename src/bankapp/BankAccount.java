@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BankAccount {
 
@@ -78,5 +79,11 @@ public class BankAccount {
 
 		this.transactionHistory.add(new Transaction("Transfer Sent", amount, getCurrentTime()));
 		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, getCurrentTime()));
+	}
+	
+	public void logout(Map<Integer, List<Object>> accounts) {
+		accounts.clear();
+		transactionHistory.clear();
+		balance = 0.0;
 	}
 }

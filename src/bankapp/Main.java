@@ -7,6 +7,10 @@ public class Main {
 			menu.displayOptions();
 			int userChoice = menu.readIntFromPlayer();
 	        menu.processUserInput(userChoice);
+	        if (userChoice == 9) {
+	        	System.out.println("You have successfully logged out");
+	        	break;
+	        }
 		}
 	}
 }

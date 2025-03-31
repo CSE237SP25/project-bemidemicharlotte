@@ -85,5 +85,6 @@ public class BankAccount {
 		accounts.clear();
 		transactionHistory.clear();
 		balance = 0.0;
+		System.out.println("You have successfully logged out");
 	}
 }

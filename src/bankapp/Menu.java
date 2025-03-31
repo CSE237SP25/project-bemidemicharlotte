@@ -9,6 +9,7 @@ public class Menu {
     private CreateAccount newAccount;
     private UpdateAccount updateAccount;
     private Map<Integer, List<Object>> accounts;
+    private int currentAccountNumber;
 
     private Scanner keyboardInput;
 
@@ -17,6 +18,7 @@ public class Menu {
         fixedDeposit = new FixedDeposit();
         keyboardInput = new Scanner(System.in);
         this.accounts = new HashMap<>();
+        currentAccountNumber = 0;
     }
     
     public BankAccount getAccount() {
@@ -34,6 +36,7 @@ public class Menu {
          System.out.println("7. Create Account");
          System.out.println("8. Update Account Information");
          System.out.println("9. Logout");
+         System.out.println("10. View My Profile");
     }
     
     public int readIntFromPlayer() {
@@ -72,6 +75,9 @@ public class Menu {
             case 9:
             	theAccount.logout(accounts);
             	break;
+            case 10:
+            	handleViewProfile();
+            	break;
             default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
 	    }
@@ -99,6 +105,7 @@ public class Menu {
 
     public void storeAccountInfo(String name, String email, String phoneNumber) {
         int accountNumber = (int) (Math.random() * 900_000_000) + 100_000_000;
+        currentAccountNumber = accountNumber;
         List<Object> accountDetails = new ArrayList<>();
         accountDetails.add(name);
         accountDetails.add(phoneNumber);
@@ -183,7 +190,6 @@ public class Menu {
     }
 
     public void displayAccountDetails(int accountNumber){
-            System.out.println();
             System.out.println("Account Number: " + accountNumber);
             System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
             System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
@@ -195,6 +201,15 @@ public class Menu {
         double amountToDeposit = keyboardInput.nextDouble();
         processDeposit(amountToDeposit);
         System.out.println("You deposited $" + amountToDeposit + " into your account.");
+    }
+    
+    public void handleViewProfile() {
+    	System.out.println("~ My Profile ~");
+    	if (this.accounts.size() != 0) {
+    		displayAccountDetails(currentAccountNumber);
+    	} else {
+    		System.out.println("Please create an account first");
+    	}
     }
     
     public void processDeposit(double amount) {

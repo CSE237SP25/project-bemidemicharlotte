@@ -7,6 +7,9 @@ public class Main {
 			menu.displayOptions();
 			int userChoice = menu.readIntFromPlayer();
 	        menu.processUserInput(userChoice);
+	        if (userChoice == 9) {
+	        	break;
+	        }
 		}
 	}
 }

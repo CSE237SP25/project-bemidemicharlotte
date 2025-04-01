@@ -15,7 +15,6 @@ public class CreateAccount {
         this.accounts = new HashMap<>();
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
@@ -43,7 +42,6 @@ public class CreateAccount {
             throw new IllegalArgumentException("Invalid phone number format.");
         }
     }
-
 
     public String getName(){
         return this.name;

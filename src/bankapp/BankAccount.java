@@ -87,4 +87,25 @@ public class BankAccount {
 		balance = 0.0;
 		System.out.println("You have successfully logged out");
 	}
+
+	public void scheduleTransfer(BankAccount recipient, double amount, int delayInSeconds) {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Transfer amount must be positive.");
+		}
+		if (amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds.");
+		}
+
+		new Thread(() -> {
+			try {
+				Thread.sleep(delayInSeconds * 1000);
+				this.withdraw(amount);
+				recipient.deposit(amount);
+				System.out.println("Transfer of $" + amount + " completed after " + delayInSeconds + " seconds.");
+			} catch (InterruptedException e) {
+				System.out.println("Transfer interrupted.");
+			}
+		}).start();
+	}
+
 }

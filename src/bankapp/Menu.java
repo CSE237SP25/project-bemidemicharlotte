@@ -37,6 +37,7 @@ public class Menu {
          System.out.println("8. Update Account Information");
          System.out.println("9. Logout");
          System.out.println("10. View My Profile");
+         System.out.println("11. Schedule a Transfer");
     }
     
     public int readIntFromPlayer() {
@@ -78,6 +79,9 @@ public class Menu {
             case 10:
             	handleViewProfile();
             	break;
+            case 11:
+                handleScheduledTransfer();
+                break;
             default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
 	    }
@@ -259,6 +263,22 @@ public class Menu {
             System.out.println("Recipient balance: $" + recipientAccount.getCurrentBalance());
         } catch (IllegalArgumentException e) {
             System.out.println("Transfer failed: " + e.getMessage());
+        }
+    }
+    public void handleScheduledTransfer() {
+        BankAccount recipientAccount = new BankAccount();
+
+        System.out.print("Enter amount to transfer: ");
+        double amount = keyboardInput.nextDouble();
+
+        System.out.print("Enter delay time in seconds: ");
+        int delayInSeconds = keyboardInput.nextInt();
+
+        try {
+            theAccount.scheduleTransfer(recipientAccount, amount, delayInSeconds);
+            System.out.println("Transfer of $" + amount + " scheduled in " + delayInSeconds + " seconds.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Scheduling failed: " + e.getMessage());
         }
     }
 }

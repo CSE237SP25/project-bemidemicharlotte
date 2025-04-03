@@ -37,7 +37,7 @@ public class Menu {
          System.out.println("8. Update Account Information");
          System.out.println("9. Logout");
          System.out.println("10. View My Profile");
-        System.out.println("7. Schedule a Transfer");
+         System.out.println("11. Schedule a Transfer");
     }
     
     public int readIntFromPlayer() {

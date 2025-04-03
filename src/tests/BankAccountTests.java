@@ -124,5 +124,18 @@ public class BankAccountTests {
 		}
 	}
 
+	@Test
+	public void testScheduledTransferExecutesAfterDelay() throws InterruptedException {
+		BankAccount sender = new BankAccount();
+		BankAccount receiver = new BankAccount();
+
+		sender.deposit(100);
+		sender.scheduleTransfer(receiver, 40, 2);
+		Thread.sleep(3000);
+
+		assertEquals(60.0, sender.getCurrentBalance(), 0.005);
+		assertEquals(40.0, receiver.getCurrentBalance(), 0.005);
+	}
+
 
 }

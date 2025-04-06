@@ -1,6 +1,5 @@
 package bankapp;
 import java.util.*;
-import java.util.Scanner;
 
 
 public class Menu {
@@ -25,6 +24,19 @@ public class Menu {
         return theAccount;
     }
 
+    public void setAccounts(Map<Integer, List<Object>> accounts){
+        this.accounts = accounts;
+    }
+
+    public Map<Integer, List<Object>> getAccounts(){
+        return accounts;
+    }
+
+    public void currentBankAccount(int accountNumber){
+        this.currentAccountNumber = accountNumber;
+        this.theAccount = (BankAccount)this.accounts.get(accountNumber).get(4);
+    }
+
     public void displayOptions() {
 		 System.out.println("\n ~ Bank Menu ~");
          System.out.println("1. Deposit");
@@ -33,11 +45,11 @@ public class Menu {
          System.out.println("4. Check Current Balance");
          System.out.println("5. Fixed Deposit");
          System.out.println("6. Transfer Between Accounts");
-         System.out.println("7. Create Account");
-         System.out.println("8. Update Account Information");
-         System.out.println("9. Logout");
-         System.out.println("10. View My Profile");
-         System.out.println("11. Schedule a Transfer");
+         System.out.println("7. Update Account Information");
+         System.out.println("8. View My Profile");
+         System.out.println("9. Schedule a Transfer");
+         System.out.println("10. Logout");
+         System.out.println("11. Delete Account");
     }
     
     public int readIntFromPlayer() {
@@ -68,129 +80,44 @@ public class Menu {
                 handleTransfer();
                 break;
             case 7:
-                handleCreateAccount();
-                break;
-            case 8:
                 handleUpdateAccount();
                 break;
-            case 9:
-            	theAccount.logout(accounts);
-            	break;
-            case 10:
+            case 8:
             	handleViewProfile();
             	break;
-            case 11:
+            case 9:
                 handleScheduledTransfer();
                 break;
+            case 10:
+            	break;
+            case 11:
+                handleDelete();
+                break;
             default:
-	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
+	            System.out.println("Invalid choice. Please enter a number between 1 and 10");
 	    }
     }
 
-    public void handleCreateAccount() {
-        newAccount = new CreateAccount();
-        System.out.println("Please Enter your name: ");
-        String name = keyboardInput.nextLine();
-        System.out.println("Please Enter your email: ");
-        String email = keyboardInput.nextLine();
-        System.out.println("Please Enter your phone number: ");
-        String phoneNumber = keyboardInput.nextLine();
-
-        try{
-            newAccount.setName(name);
-            newAccount.setEmail(email);
-            newAccount.setPhoneNumber(phoneNumber);
-            storeAccountInfo(name, email, phoneNumber);
-        } catch (java.lang.Exception e) {
-            System.out.println("Could not create account because: " + e.getMessage());
-        }
-
-    }
-
-    public void storeAccountInfo(String name, String email, String phoneNumber) {
-        int accountNumber = (int) (Math.random() * 900_000_000) + 100_000_000;
-        currentAccountNumber = accountNumber;
-        List<Object> accountDetails = new ArrayList<>();
-        accountDetails.add(name);
-        accountDetails.add(phoneNumber);
-        accountDetails.add(email);
-        this.accounts.put(accountNumber, accountDetails);
-        System.out.println("Your account has been created.");
-        displayAccountDetails(accountNumber);
-    }
-
-
     public void handleUpdateAccount() {
-        updateAccount = new UpdateAccount(accounts);
-        System.out.println("Please enter your account number: ");
-        int accountNumber = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-
+        UpdateAccountMenu updateAccountMenu = new UpdateAccountMenu();
+        updateAccountMenu.setBankAccount(theAccount);
+        updateAccountMenu.setAccountNumber(currentAccountNumber);
+        //pass in the account number
         while(true){
-            try{
-                updateAccount.validAccountNumber(accountNumber);
-            } catch (java.lang.Exception e) {
-                System.out.println( e.getMessage());
+            updateAccountMenu.setAccounts(this.accounts);
+            updateAccountMenu.displayOptions();
+            int userChoice = updateAccountMenu.readIntFromPlayer();
+            updateAccountMenu.processuserInput(userChoice);
+            //update the account number
+            this.accounts = updateAccountMenu.getAccounts();
+            if(userChoice == 4){
                 break;
             }
-            updateAccount.displayOptions();
-            System.out.println("Enter your choice: ");
-            int choice = keyboardInput.nextInt();
-            keyboardInput.nextLine();
-            if(choice == 1){
-                handleUpdateName(accountNumber);
-            } else if(choice == 2){
-                handleUpdatePhoneNumber(accountNumber);
-            } else if (choice == 3){
-                handleUpdateEmail(accountNumber);
-            } else if (choice == 4) {
-                break;
-            } else {
-                System.out.println("Invalid choice. Please enter a number between 1 and 4.");
-            }
         }
     }
 
-    public void handleUpdateName(int accountNumber){
-        System.out.println("Please enter your updated name: ");
-        String name = keyboardInput.nextLine();
-        try{
-            this.accounts = updateAccount.updateName(accountNumber, name);
-            System.out.println("Please Find Below Your Updated Information.");
-            displayAccountDetails(accountNumber);
-            System.out.println();
-        } catch(java.lang.Exception e) {
-            System.out.println( e.getMessage());
-            System.out.println();
-        }
-    }
-
-    public void handleUpdatePhoneNumber(int accountNumber){
-        System.out.println("Please enter your new phone number: ");
-        String phoneNumber = keyboardInput.nextLine();
-        try{
-            this.accounts = updateAccount.updatePhoneNumber(accountNumber, phoneNumber);
-            System.out.println("Please Find Below Your Updated Information.");
-            displayAccountDetails(accountNumber);
-            System.out.println();
-        } catch(java.lang.Exception e) {
-            System.out.println( e.getMessage());
-            System.out.println();
-        }
-    }
-
-    public void handleUpdateEmail(int accountNumber){
-        System.out.println("Please enter your new email address");
-        String email = keyboardInput.nextLine();
-        try{
-            this.accounts = updateAccount.updateEmail(accountNumber, email);
-            System.out.println("Please Find Below Your Updated Information.");
-            displayAccountDetails(accountNumber);
-            System.out.println();
-        } catch(java.lang.Exception e) {
-            System.out.println( e.getMessage());
-            System.out.println();
-        }
+    public void handleDelete(){
+        this.accounts.remove(this.currentAccountNumber);
     }
 
     public void displayAccountDetails(int accountNumber){

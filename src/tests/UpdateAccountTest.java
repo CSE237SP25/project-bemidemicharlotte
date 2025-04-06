@@ -1,11 +1,10 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import bankapp.UpdateAccount;
 
@@ -16,7 +15,7 @@ public class UpdateAccountTest {
     private Map<Integer, List<Object>> accounts;
     private UpdateAccount updateAccount;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         accounts = new HashMap<>();
         // Initialize dummy account with: name, phone number, email
@@ -38,10 +37,12 @@ public class UpdateAccountTest {
 
     @Test
     public void testUpdatePhoneNumber_Invalid() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        try {
             updateAccount.updatePhoneNumber(123456789, "invalid-number");
-        });
-        assertEquals("Invalid phone number format.", exception.getMessage());
+            fail("Expected IllegalArgumentException for invalid phone number");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Invalid phone number format.", e.getMessage());
+        }
     }
 
     @Test
@@ -52,17 +53,21 @@ public class UpdateAccountTest {
 
     @Test
     public void testUpdateEmail_Invalid() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        try {
             updateAccount.updateEmail(123456789, "bad-email");
-        });
-        assertEquals("Invalid email format.", exception.getMessage());
+            fail("Expected IllegalArgumentException for invalid email");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Invalid email format.", e.getMessage());
+        }
     }
 
     @Test
     public void testUpdateInvalidAccountNumber() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        try {
             updateAccount.updateName(999999999, "Someone");
-        });
-        assertEquals("Account number does not exist, please retry with a valid account number", exception.getMessage());
+            fail("Expected IllegalArgumentException for non-existent account number");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Account number does not exist, please retry with a valid account number", e.getMessage());
+        }
     }
 }

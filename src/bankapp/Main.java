@@ -2,14 +2,14 @@ package bankapp;
 
 public class Main {
 	 public static void main(String[] args) {
-		Menu menu = new Menu();
-		while (true) {
-			menu.displayOptions();
-			int userChoice = menu.readIntFromPlayer();
-	        menu.processUserInput(userChoice);
-	        if (userChoice == 9) {
-	        	break;
-	        }
+		LogInMenu logInMenu = new LogInMenu();
+		while(true){
+			logInMenu.displayOptions();
+			int userChoice = logInMenu.readIntFromPlayer();
+			logInMenu.processUserInput(userChoice);
+			if(userChoice == 3){
+				break;
+			}
 		}
 	}
 }

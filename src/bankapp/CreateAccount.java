@@ -9,6 +9,7 @@ public class CreateAccount {
     private String phoneNumber;
     private int accountNumber;
     private String name;
+    private String password;
     private Map<Integer, List<Object>> accounts;
 
     public CreateAccount() {
@@ -41,6 +42,10 @@ public class CreateAccount {
         } else {
             throw new IllegalArgumentException("Invalid phone number format.");
         }
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 
     public String getName(){

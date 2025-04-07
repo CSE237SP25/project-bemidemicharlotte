@@ -7,9 +7,6 @@ public class Main {
 			logInMenu.displayOptions();
 			int userChoice = logInMenu.readIntFromPlayer();
 			logInMenu.processUserInput(userChoice);
-			if(userChoice == 3){
-				break;
-			}
 		}
 	}
 }

@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="615ec8d0-ffe6-4582-8bbc-3db1cc13ff14" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bankapp/BankAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bankapp/BankAccount.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bankapp/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bankapp/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/BankAccountTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/BankAccountTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +36,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "scheduleTransfer",
+    "git-widget-placeholder": "setSpendingLimit",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/emilyhan/project-bemidemicharlotte",
     "node.js.detected.package.eslint": "true",
@@ -79,7 +79,8 @@
       <workItem from="1742778876473" duration="3925000" />
       <workItem from="1742783618538" duration="113000" />
       <workItem from="1742944871057" duration="2032000" />
-      <workItem from="1743702361881" duration="326000" />
+      <workItem from="1743702361881" duration="619000" />
+      <workItem from="1744084125886" duration="1060000" />
     </task>
     <servers />
   </component>

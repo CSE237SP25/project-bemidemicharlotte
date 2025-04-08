@@ -8,10 +8,12 @@ import java.util.List;
 public class BankAccount {
 
 	private double balance;
+	private double spendingLimit;
 	private List<Transaction> transactionHistory;
 	
 	public BankAccount() {
 		this.balance = 0;
+		this.spendingLimit = Double.MAX_VALUE;
 		this.transactionHistory = new ArrayList<>();
 	}
 	
@@ -98,6 +100,12 @@ public class BankAccount {
 				System.out.println("Transfer interrupted.");
 			}
 		}).start();
+	}
+	public void setSpendingLimit(double limit) {
+		if (limit < 0) {
+			throw new IllegalArgumentException("Spending limit must be non-negative.");
+		}
+		this.spendingLimit = limit;
 	}
 
 }

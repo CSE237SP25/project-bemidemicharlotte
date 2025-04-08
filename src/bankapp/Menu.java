@@ -50,6 +50,8 @@ public class Menu {
          System.out.println("9. Schedule a Transfer");
          System.out.println("10. Logout");
          System.out.println("11. Delete Account");
+         System.out.println("12. Set Spending Limit");
+
     }
     
     public int readIntFromPlayer() {
@@ -92,6 +94,9 @@ public class Menu {
             	break;
             case 11:
                 handleDelete();
+                break;
+            case 12:
+                handleSetSpendingLimit();
                 break;
             default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and 10");
@@ -208,4 +213,17 @@ public class Menu {
             System.out.println("Scheduling failed: " + e.getMessage());
         }
     }
+
+    public void handleSetSpendingLimit() {
+        System.out.print("Enter your desired spending limit: ");
+        double limit = keyboardInput.nextDouble();
+
+        try {
+            theAccount.setSpendingLimit(limit);
+            System.out.println("Spending limit set to $" + limit);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to set limit: " + e.getMessage());
+        }
+    }
+
 }

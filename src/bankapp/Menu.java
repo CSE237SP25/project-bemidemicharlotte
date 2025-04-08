@@ -7,6 +7,7 @@ public class Menu {
 	private FixedDeposit fixedDeposit;
     private CreateAccount newAccount;
     private UpdateAccount updateAccount;
+    private CategorizeSpending categorizeSpending;
     private Map<Integer, List<Object>> accounts;
     private int currentAccountNumber;
 
@@ -17,6 +18,7 @@ public class Menu {
         fixedDeposit = new FixedDeposit();
         keyboardInput = new Scanner(System.in);
         this.accounts = new HashMap<>();
+        categorizeSpending = new CategorizeSpending(theAccount);
         currentAccountNumber = 0;
     }
     
@@ -50,6 +52,7 @@ public class Menu {
          System.out.println("9. Schedule a Transfer");
          System.out.println("10. Logout");
          System.out.println("11. Delete Account");
+         System.out.println("12. Categorize Spending");
     }
     
     public int readIntFromPlayer() {
@@ -93,6 +96,9 @@ public class Menu {
             case 11:
                 handleDelete();
                 break;
+            case 12:
+            	handleCategory();
+            	break;
             default:
 	            System.out.println("Invalid choice. Please enter a number between 1 and 10");
 	    }
@@ -208,4 +214,14 @@ public class Menu {
             System.out.println("Scheduling failed: " + e.getMessage());
         }
     }
+    
+    public void handleCategory() {
+    	System.out.println("Select a category for you last withdrawal:");
+    	categorizeSpending.viewCategory();
+    	int choice = keyboardInput.nextInt();
+    	categorizeSpending.processCategory(choice);
+    	categorizeSpending.showCategory();
+    }
+    
+
 }

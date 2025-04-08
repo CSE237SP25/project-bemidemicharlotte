@@ -3,18 +3,25 @@ package bankapp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class BankAccount {
 
 	private double balance;
 	private double spendingLimit;
+	public double spending;
 	private List<Transaction> transactionHistory;
+
 	
 	public BankAccount() {
 		this.balance = 0;
 		this.spendingLimit = Double.MAX_VALUE;
+		this.spending=0;
 		this.transactionHistory = new ArrayList<>();
+
 	}
 	
 	public void deposit(double amount) {
@@ -32,9 +39,14 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
+		this.spending=amount;
 		this.balance -= amount;
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime()));
+		
 	}
+	
+
+	
 	
 	public double getCurrentBalance() {
 		return this.balance;

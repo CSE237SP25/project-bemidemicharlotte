@@ -1,7 +1,6 @@
 package bankapp;
 import java.util.*;
 
-
 public class Menu {
 	private BankAccount theAccount;
 	private FixedDeposit fixedDeposit;
@@ -50,9 +49,10 @@ public class Menu {
          System.out.println("7. Update Account Information");
          System.out.println("8. View My Profile");
          System.out.println("9. Schedule a Transfer");
-         System.out.println("10. Logout");
-         System.out.println("11. Delete Account");
-         System.out.println("12. Categorize Spending");
+         System.out.println("10. Set Spending Limit");
+         System.out.println("11. Categorize Spending");
+         System.out.println("12. Logout");
+         System.out.println("13. Delete Account");
     }
     
     public int readIntFromPlayer() {
@@ -79,28 +79,31 @@ public class Menu {
 	        case 5:
 	        	handleInterest();
 	        	break;
-            case 6:
-                handleTransfer();
-                break;
-            case 7:
-                handleUpdateAccount();
-                break;
-            case 8:
-            	handleViewProfile();
-            	break;
-            case 9:
-                handleScheduledTransfer();
-                break;
-            case 10:
-            	break;
-            case 11:
-                handleDelete();
-                break;
-            case 12:
-            	handleCategory();
-            	break;
-            default:
-	            System.out.println("Invalid choice. Please enter a number between 1 and 10");
+          case 6:
+              handleTransfer();
+              break;
+          case 7:
+              handleUpdateAccount();
+              break;
+          case 8:
+            handleViewProfile();
+            break;
+          case 9:
+              handleScheduledTransfer();
+              break;
+          case 10:
+            handleSetSpendingLimit();
+            break;
+          case 11:
+              handleCategory();
+              break;
+          case 12:
+              break;
+          case 13: 
+            handleDelete();
+            break;
+          default:
+            System.out.println("Invalid choice. Please enter a number between 1 and 10");
 	    }
     }
 
@@ -198,6 +201,7 @@ public class Menu {
             System.out.println("Transfer failed: " + e.getMessage());
         }
     }
+  
     public void handleScheduledTransfer() {
         BankAccount recipientAccount = new BankAccount();
 
@@ -214,6 +218,18 @@ public class Menu {
             System.out.println("Scheduling failed: " + e.getMessage());
         }
     }
+
+    public void handleSetSpendingLimit() {
+        System.out.print("Enter your desired spending limit: ");
+        double limit = keyboardInput.nextDouble();
+
+        try {
+            theAccount.setSpendingLimit(limit);
+            System.out.println("Spending limit set to $" + limit);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to set limit: " + e.getMessage());
+        }
+    }
     
     public void handleCategory() {
     	System.out.println("Select a category for you last withdrawal:");
@@ -222,6 +238,4 @@ public class Menu {
     	categorizeSpending.processCategory(choice);
     	categorizeSpending.showCategory();
     }
-    
-
 }

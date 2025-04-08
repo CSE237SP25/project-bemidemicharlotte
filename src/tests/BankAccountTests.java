@@ -141,5 +141,28 @@ public class BankAccountTests {
 	
 
 
+	@Test
+	public void testSpendingLimitBlocksWithdrawal() {
+		BankAccount account = new BankAccount();
+		account.deposit(100);
+		account.setSpendingLimit(30);
+
+		try {
+			account.withdraw(50);
+			fail("Withdrawal over limit should have failed.");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Amount exceeds your spending limit.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testSpendingLimitAllowsValidWithdrawal() {
+		BankAccount account = new BankAccount();
+		account.deposit(100);
+		account.setSpendingLimit(80);
+
+		account.withdraw(50);
+		assertEquals(50.0, account.getCurrentBalance(), 0.005);
+	}
 
 }

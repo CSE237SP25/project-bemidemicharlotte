@@ -1,7 +1,5 @@
 package bankapp;
-
 import java.util.Scanner;
-
 public class CategorizeSpending {
 	
 	private BankAccount theAccount;
@@ -12,7 +10,6 @@ public class CategorizeSpending {
 	private double clothes=0;
 	private double other=0;
 	private Scanner keyboardInput;
-
 	public CategorizeSpending(BankAccount account) {
 		this.theAccount= account;
 		keyboardInput = new Scanner(System.in);
@@ -28,7 +25,6 @@ public class CategorizeSpending {
 	}
 		
 	public void processCategory(int choice) {
-
 		switch (choice) {
 			case 1 -> food += theAccount.spending;
 			case 2 -> groceries += theAccount.spending;
@@ -36,8 +32,8 @@ public class CategorizeSpending {
 			case 4 -> clothes += theAccount.spending;
 			default -> other += theAccount.spending;
 		}
+		 theAccount.spending = 0.0;
 	}
-
 	
 	public double getFoodSpending() { return food; }
 	public double getGroceriesSpending() { return groceries; }
@@ -51,5 +47,4 @@ public class CategorizeSpending {
 	    System.out.println("You spend $"+transportation+"on transportation");
 	    System.out.println("You spend $"+clothes+"on clothes");
 	}
-
 }

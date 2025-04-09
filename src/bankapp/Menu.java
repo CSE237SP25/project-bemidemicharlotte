@@ -1,22 +1,21 @@
 package bankapp;
 import java.util.*;
-
 public class Menu {
 	private BankAccount theAccount;
 	private FixedDeposit fixedDeposit;
     private CreateAccount newAccount;
     private UpdateAccount updateAccount;
     private CategorizeSpending categorizeSpending;
+    private MoneyManagement moneyManagement;
     private Map<Integer, List<Object>> accounts;
     private int currentAccountNumber;
-
     private Scanner keyboardInput;
-
     public Menu() {
         theAccount = new BankAccount();
         fixedDeposit = new FixedDeposit();
         keyboardInput = new Scanner(System.in);
         this.accounts = new HashMap<>();
+        moneyManagement = new MoneyManagement();
         categorizeSpending = new CategorizeSpending(theAccount);
         currentAccountNumber = 0;
     }
@@ -24,20 +23,18 @@ public class Menu {
     public BankAccount getAccount() {
         return theAccount;
     }
-
     public void setAccounts(Map<Integer, List<Object>> accounts){
         this.accounts = accounts;
     }
-
     public Map<Integer, List<Object>> getAccounts(){
         return accounts;
     }
-
     public void currentBankAccount(int accountNumber){
         this.currentAccountNumber = accountNumber;
         this.theAccount = (BankAccount)this.accounts.get(accountNumber).get(4);
+        
+        this.categorizeSpending = new CategorizeSpending(this.theAccount);
     }
-
     public void displayOptions() {
 		 System.out.println("\n ~ Bank Menu ~");
          System.out.println("1. Deposit");
@@ -51,8 +48,9 @@ public class Menu {
          System.out.println("9. Schedule a Transfer");
          System.out.println("10. Set Spending Limit");
          System.out.println("11. Categorize Spending");
-         System.out.println("12. Logout");
-         System.out.println("13. Delete Account");
+         System.out.println("12. Money Management Advise");
+         System.out.println("13. Logout");
+         System.out.println("14. Delete Account");
     }
     
     public int readIntFromPlayer() {
@@ -79,34 +77,37 @@ public class Menu {
 	        case 5:
 	        	handleInterest();
 	        	break;
-          case 6:
-              handleTransfer();
-              break;
-          case 7:
-              handleUpdateAccount();
-              break;
-          case 8:
-            handleViewProfile();
-            break;
-          case 9:
-              handleScheduledTransfer();
-              break;
-          case 10:
-            handleSetSpendingLimit();
-            break;
-          case 11:
-              handleCategory();
-              break;
-          case 12:
-              break;
-          case 13: 
-            handleDelete();
-            break;
-          default:
-            System.out.println("Invalid choice. Please enter a number between 1 and 13");
+	        case 6:
+	        	handleTransfer();
+	        	break;
+	        case 7:
+	        	handleUpdateAccount();
+	        	break;
+	        case 8:
+	        	handleViewProfile();
+	        	break;
+	        case 9:
+	        	handleScheduledTransfer();
+	        	break;
+	        case 10:
+	        	handleSetSpendingLimit();
+	        	break;
+	        case 11:
+	        	handleCategory();
+	        	break;
+	        case 12:
+	        	handleManagement();
+	        	break;
+	        case 13:
+	        	break;
+	        	//logout
+	        case 14: 
+	        	handleDelete();
+	        	break;
+	        default:
+	        	System.out.println("Invalid choice. Please enter a number between 1 and 10");
 	    }
     }
-
     public void handleUpdateAccount() {
         UpdateAccountMenu updateAccountMenu = new UpdateAccountMenu();
         updateAccountMenu.setBankAccount(theAccount);
@@ -124,18 +125,15 @@ public class Menu {
             }
         }
     }
-
     public void handleDelete(){
         this.accounts.remove(this.currentAccountNumber);
     }
-
     public void displayAccountDetails(int accountNumber){
             System.out.println("Account Number: " + accountNumber);
             System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
             System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
             System.out.println("Email: " + this.accounts.get(accountNumber).get(2));
     }
-
     public void handleDeposit() {
     	System.out.println("Please enter deposit amount: ");
         double amountToDeposit = keyboardInput.nextDouble();
@@ -189,9 +187,7 @@ public class Menu {
     public void handleTransfer() {
         System.out.println("Enter amount to transfer: ");
         double amountToTransfer = keyboardInput.nextDouble();
-
         BankAccount recipientAccount = new BankAccount();
-
         try {
             theAccount.transferTo(recipientAccount, amountToTransfer);
             System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
@@ -204,13 +200,10 @@ public class Menu {
   
     public void handleScheduledTransfer() {
         BankAccount recipientAccount = new BankAccount();
-
         System.out.print("Enter amount to transfer: ");
         double amount = keyboardInput.nextDouble();
-
         System.out.print("Enter delay time in seconds: ");
         int delayInSeconds = keyboardInput.nextInt();
-
         try {
             theAccount.scheduleTransfer(recipientAccount, amount, delayInSeconds);
             System.out.println("Transfer of $" + amount + " scheduled in " + delayInSeconds + " seconds.");
@@ -218,11 +211,9 @@ public class Menu {
             System.out.println("Scheduling failed: " + e.getMessage());
         }
     }
-
     public void handleSetSpendingLimit() {
         System.out.print("Enter your desired spending limit: ");
         double limit = keyboardInput.nextDouble();
-
         try {
             theAccount.setSpendingLimit(limit);
             System.out.println("Spending limit set to $" + limit);
@@ -237,5 +228,18 @@ public class Menu {
     	int choice = keyboardInput.nextInt();
     	categorizeSpending.processCategory(choice);
     	categorizeSpending.showCategory();
+    }
+    
+    public void handleManagement() {
+        System.out.println("Select a goal for your money:");
+        moneyManagement.goalAdvisory();
+        
+        int choice = keyboardInput.nextInt();
+        if (choice == 1) {
+            System.out.print("Enter your monthly income: ");
+            double income = keyboardInput.nextDouble();
+            moneyManagement.setIncome(income);
+        }
+        moneyManagement.adviseNavigation(choice);
     }
 }

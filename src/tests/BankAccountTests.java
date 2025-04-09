@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
+
 import org.junit.jupiter.api.Test;
 
 import bankapp.BankAccount;
@@ -124,5 +126,43 @@ public class BankAccountTests {
 		}
 	}
 
+	@Test
+	public void testScheduledTransferExecutesAfterDelay() throws InterruptedException {
+		BankAccount sender = new BankAccount();
+		BankAccount receiver = new BankAccount();
+
+		sender.deposit(100);
+		sender.scheduleTransfer(receiver, 40, 2);
+		Thread.sleep(3000);
+
+		assertEquals(60.0, sender.getCurrentBalance(), 0.005);
+		assertEquals(40.0, receiver.getCurrentBalance(), 0.005);
+	}
+	
+
+
+	@Test
+	public void testSpendingLimitBlocksWithdrawal() {
+		BankAccount account = new BankAccount();
+		account.deposit(100);
+		account.setSpendingLimit(30);
+
+		try {
+			account.withdraw(50);
+			fail("Withdrawal over limit should have failed.");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Amount exceeds your spending limit.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testSpendingLimitAllowsValidWithdrawal() {
+		BankAccount account = new BankAccount();
+		account.deposit(100);
+		account.setSpendingLimit(80);
+
+		account.withdraw(50);
+		assertEquals(50.0, account.getCurrentBalance(), 0.005);
+	}
 
 }

@@ -1,18 +1,27 @@
 package bankapp;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class BankAccount {
 
 	private double balance;
+	private double spendingLimit;
+	public double spending;
 	private List<Transaction> transactionHistory;
+
 	
 	public BankAccount() {
 		this.balance = 0;
+		this.spendingLimit = Double.MAX_VALUE;
+		this.spending=0;
 		this.transactionHistory = new ArrayList<>();
+
 	}
 	
 	public void deposit(double amount) {
@@ -30,6 +39,7 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
+		this.spending=amount;
 		this.balance -= amount;
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime()));
 	}
@@ -78,5 +88,32 @@ public class BankAccount {
 
 		this.transactionHistory.add(new Transaction("Transfer Sent", amount, getCurrentTime()));
 		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, getCurrentTime()));
+	}
+
+	public void scheduleTransfer(BankAccount recipient, double amount, int delayInSeconds) {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Transfer amount must be positive.");
+		}
+		if (amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds.");
+		}
+
+		new Thread(() -> {
+			try {
+				Thread.sleep(delayInSeconds * 1000);
+				this.withdraw(amount);
+				recipient.deposit(amount);
+				System.out.println("Transfer of $" + amount + " completed after " + delayInSeconds + " seconds.");
+			} catch (InterruptedException e) {
+				System.out.println("Transfer interrupted.");
+			}
+		}).start();
+	}
+	
+	public void setSpendingLimit(double limit) {
+		if (limit < 0) {
+			throw new IllegalArgumentException("Spending limit must be non-negative.");
+		}
+		this.spendingLimit = limit;
 	}
 }

@@ -9,12 +9,12 @@ public class CreateAccount {
     private String phoneNumber;
     private int accountNumber;
     private String name;
+    private String password;
     private Map<Integer, List<Object>> accounts;
 
     public CreateAccount() {
         this.accounts = new HashMap<>();
     }
-
 
     public void setName(String name) {
         this.name = name;
@@ -44,6 +44,9 @@ public class CreateAccount {
         }
     }
 
+    public void setPassword(String password){
+        this.password = password;
+    }
 
     public String getName(){
         return this.name;
@@ -55,9 +58,5 @@ public class CreateAccount {
 
     public String getEmail(){
         return this.email;
-    }
-
-    public int getAccountNumber(){
-        return this.accountNumber;
     }
 }

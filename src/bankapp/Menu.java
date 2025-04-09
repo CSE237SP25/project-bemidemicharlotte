@@ -1,28 +1,46 @@
 package bankapp;
 import java.util.*;
-import java.util.Scanner;
-
 
 public class Menu {
 	private BankAccount theAccount;
 	private FixedDeposit fixedDeposit;
     private CreateAccount newAccount;
     private UpdateAccount updateAccount;
+    private CategorizeSpending categorizeSpending;
+    private MoneyManagement moneyManagement;
     private Map<Integer, List<Object>> accounts;
-
+    private int currentAccountNumber;
     private Scanner keyboardInput;
-
+    
     public Menu() {
         theAccount = new BankAccount();
         fixedDeposit = new FixedDeposit();
         keyboardInput = new Scanner(System.in);
         this.accounts = new HashMap<>();
+        moneyManagement = new MoneyManagement();
+        categorizeSpending = new CategorizeSpending(theAccount);
+        currentAccountNumber = 0;
     }
     
     public BankAccount getAccount() {
         return theAccount;
     }
-
+    
+    public void setAccounts(Map<Integer, List<Object>> accounts){
+        this.accounts = accounts;
+    }
+    
+    public Map<Integer, List<Object>> getAccounts() {
+        return accounts;
+    }
+    
+    public void currentBankAccount(int accountNumber) {
+        this.currentAccountNumber = accountNumber;
+        this.theAccount = (BankAccount)this.accounts.get(accountNumber).get(4);
+        
+        this.categorizeSpending = new CategorizeSpending(this.theAccount);
+    }
+    
     public void displayOptions() {
 		 System.out.println("\n ~ Bank Menu ~");
          System.out.println("1. Deposit");
@@ -31,12 +49,18 @@ public class Menu {
          System.out.println("4. Check Current Balance");
          System.out.println("5. Fixed Deposit");
          System.out.println("6. Transfer Between Accounts");
-         System.out.println("7. Create Account");
-         System.out.println("8. Update Account Information");
+         System.out.println("7. Update Account Information");
+         System.out.println("8. View My Profile");
+         System.out.println("9. Schedule a Transfer");
+         System.out.println("10. Set Spending Limit");
+         System.out.println("11. Categorize Spending");
+         System.out.println("12. Money Management Advice");
+         System.out.println("13. Logout");
+         System.out.println("14. Delete Account");
     }
     
     public int readIntFromPlayer() {
-		System.out.println("Enter your choice: ");
+		System.out.println("\n Enter your choice: ");
 		int userChoice = keyboardInput.nextInt();
         keyboardInput.nextLine();
         return userChoice;
@@ -51,7 +75,7 @@ public class Menu {
 	            handleWithdrawal();
 	            break;
 	        case 3:
-	            handleViewTransaction();
+	            theAccount.viewTransactionHistory();
 	            break;
 	        case 4:
 	        	handleTotalBalance();
@@ -59,138 +83,77 @@ public class Menu {
 	        case 5:
 	        	handleInterest();
 	        	break;
-            case 6:
-                handleTransfer();
-                break;
-            case 7:
-                handleCreateAccount();
-                break;
-            case 8:
-                handleUpdateAccount();
-                break;
-            default:
-	            System.out.println("Invalid choice. Please enter a number between 1 and n.");
+	        case 6:
+	        	handleTransfer();
+	        	break;
+	        case 7:
+	        	handleUpdateAccount();
+	        	break;
+	        case 8:
+	        	handleViewProfile();
+	        	break;
+	        case 9:
+	        	handleScheduledTransfer();
+	        	break;
+	        case 10:
+	        	handleSetSpendingLimit();
+	        	break;
+	        case 11:
+	        	handleCategory();
+	        	break;
+	        case 12:
+	        	handleManagement();
+	        	break;
+	        case 13:
+	        	break;
+	        	// logout
+	        case 14: 
+	        	handleDelete();
+	        	break;
+	        default:
+	        	System.out.println("Invalid choice. Please enter a number between 1 and 14");
 	    }
     }
-
-    public void handleCreateAccount() {
-        newAccount = new CreateAccount();
-        System.out.println("Please Enter your name: ");
-        String name = keyboardInput.nextLine();
-        System.out.println("Please Enter your email: ");
-        String email = keyboardInput.nextLine();
-        System.out.println("Please Enter your phone number: ");
-        String phoneNumber = keyboardInput.nextLine();
-
-        try{
-            newAccount.setName(name);
-            newAccount.setEmail(email);
-            newAccount.setPhoneNumber(phoneNumber);
-            storeAccountInfo(name, email, phoneNumber);
-        } catch (java.lang.Exception e) {
-            System.out.println("Could not create account because: " + e.getMessage());
-        }
-
-    }
-
-    public void storeAccountInfo(String name, String email, String phoneNumber) {
-        int accountNumber = (int) (Math.random() * 900_000_000) + 100_000_000;
-        List<Object> accountDetails = new ArrayList<>();
-        accountDetails.add(name);
-        accountDetails.add(phoneNumber);
-        accountDetails.add(email);
-        this.accounts.put(accountNumber, accountDetails);
-        System.out.println("Your account has been created.");
-        displayAccountDetails(accountNumber);
-    }
-
-
     public void handleUpdateAccount() {
-        updateAccount = new UpdateAccount(accounts);
-        System.out.println("Please enter your account number: ");
-        int accountNumber = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-
-        while(true){
-            try{
-                updateAccount.validAccountNumber(accountNumber);
-            } catch (java.lang.Exception e) {
-                System.out.println( e.getMessage());
+        UpdateAccountMenu updateAccountMenu = new UpdateAccountMenu();
+        updateAccountMenu.setBankAccount(theAccount);
+        updateAccountMenu.setAccountNumber(currentAccountNumber);
+        //pass in the account number
+        while(true) {
+            updateAccountMenu.setAccounts(this.accounts);
+            updateAccountMenu.displayOptions();
+            int userChoice = updateAccountMenu.readIntFromPlayer();
+            updateAccountMenu.processuserInput(userChoice);
+            //update the account number
+            this.accounts = updateAccountMenu.getAccounts();
+            if(userChoice == 4) {
                 break;
             }
-            updateAccount.displayOptions();
-            System.out.println("Enter your choice: ");
-            int choice = keyboardInput.nextInt();
-            keyboardInput.nextLine();
-            if(choice == 1){
-                handleUpdateName(accountNumber);
-            } else if(choice == 2){
-                handleUpdatePhoneNumber(accountNumber);
-            } else if (choice == 3){
-                handleUpdateEmail(accountNumber);
-            } else if (choice == 4) {
-                break;
-            } else {
-                System.out.println("Invalid choice. Please enter a number between 1 and 4.");
-            }
         }
     }
-
-    public void handleUpdateName(int accountNumber){
-        System.out.println("Please enter your updated name: ");
-        String name = keyboardInput.nextLine();
-        try{
-            this.accounts = updateAccount.updateName(accountNumber, name);
-            System.out.println("Please Find Below You Updated Information.");
-            displayAccountDetails(accountNumber);
-            System.out.println();
-        } catch(java.lang.Exception e) {
-            System.out.println( e.getMessage());
-            System.out.println();
-        }
+    public void handleDelete() {
+        this.accounts.remove(this.currentAccountNumber);
     }
-
-    public void handleUpdatePhoneNumber(int accountNumber){
-        System.out.println("Please enter your new phone number: ");
-        String phoneNumber = keyboardInput.nextLine();
-        try{
-            this.accounts = updateAccount.updatePhoneNumber(accountNumber, phoneNumber);
-            System.out.println("Please Find Below You Updated Information.");
-            displayAccountDetails(accountNumber);
-            System.out.println();
-        } catch(java.lang.Exception e) {
-            System.out.println( e.getMessage());
-            System.out.println();
-        }
-    }
-
-    public void handleUpdateEmail(int accountNumber){
-        System.out.println("Please enter your new email address");
-        String email = keyboardInput.nextLine();
-        try{
-            this.accounts = updateAccount.updateEmail(accountNumber, email);
-            System.out.println("Please Find Below You Updated Information.");
-            displayAccountDetails(accountNumber);
-            System.out.println();
-        } catch(java.lang.Exception e) {
-            System.out.println( e.getMessage());
-            System.out.println();
-        }
-    }
-
-    public void displayAccountDetails(int accountNumber){
-            System.out.println();
+    public void displayAccountDetails(int accountNumber) {
             System.out.println("Account Number: " + accountNumber);
             System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
             System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
             System.out.println("Email: " + this.accounts.get(accountNumber).get(2));
     }
-
     public void handleDeposit() {
     	System.out.println("Please enter deposit amount: ");
         double amountToDeposit = keyboardInput.nextDouble();
         processDeposit(amountToDeposit);
         System.out.println("You deposited $" + amountToDeposit + " into your account.");
+    }
+    
+    public void handleViewProfile() {
+    	System.out.println("~ My Profile ~");
+    	if (this.accounts.size() != 0) {
+    		displayAccountDetails(currentAccountNumber);
+    	} else {
+    		System.out.println("Please create an account first");
+    	}
     }
     
     public void processDeposit(double amount) {
@@ -208,10 +171,6 @@ public class Menu {
         theAccount.withdraw(amount);
     }
     
-    public void handleViewTransaction() {
-    	theAccount.viewTransactionHistory();
-    }
-
     public void handleInterest() {
     	fixedDeposit.printTerm();
     	int accountTerm = keyboardInput.nextInt();
@@ -231,16 +190,10 @@ public class Menu {
     	System.out.println("Your final balance is $"+ accountFinalDeposit +".");
     }
     
-    public void processTotalBalance(FixedDeposit fd, double regularDeposit) {
-    	theAccount.getFinalBalance(fd);
-    }
-    
     public void handleTransfer() {
         System.out.println("Enter amount to transfer: ");
         double amountToTransfer = keyboardInput.nextDouble();
-
         BankAccount recipientAccount = new BankAccount();
-
         try {
             theAccount.transferTo(recipientAccount, amountToTransfer);
             System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
@@ -249,5 +202,51 @@ public class Menu {
         } catch (IllegalArgumentException e) {
             System.out.println("Transfer failed: " + e.getMessage());
         }
+    }
+  
+    public void handleScheduledTransfer() {
+        BankAccount recipientAccount = new BankAccount();
+        System.out.print("Enter amount to transfer: ");
+        double amount = keyboardInput.nextDouble();
+        System.out.print("Enter delay time in seconds: ");
+        int delayInSeconds = keyboardInput.nextInt();
+        try {
+            theAccount.scheduleTransfer(recipientAccount, amount, delayInSeconds);
+            System.out.println("Transfer of $" + amount + " scheduled in " + delayInSeconds + " seconds.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Scheduling failed: " + e.getMessage());
+        }
+    }
+    
+    public void handleSetSpendingLimit() {
+        System.out.print("Enter your desired spending limit: ");
+        double limit = keyboardInput.nextDouble();
+        try {
+            theAccount.setSpendingLimit(limit);
+            System.out.println("Spending limit set to $" + limit);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to set limit: " + e.getMessage());
+        }
+    }
+    
+    public void handleCategory() {
+    	System.out.println("Select a category for you last withdrawal:");
+    	categorizeSpending.viewCategory();
+    	int choice = keyboardInput.nextInt();
+    	categorizeSpending.processCategory(choice);
+    	categorizeSpending.showCategory();
+    }
+    
+    public void handleManagement() {
+        System.out.println("Select a goal for your money:");
+        moneyManagement.goalAdvisory();
+        
+        int choice = keyboardInput.nextInt();
+        if (choice == 1) {
+            System.out.print("Enter your monthly income: ");
+            double income = keyboardInput.nextDouble();
+            moneyManagement.setIncome(income);
+        }
+        moneyManagement.adviseNavigation(choice);
     }
 }

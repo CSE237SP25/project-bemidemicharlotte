@@ -4,21 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import bankapp.CreateAccount;
-
-import java.util.List;
-import java.util.Map;
 
 public class CreateAccountTest {
 
     private CreateAccount account;
 
-    @BeforeEach
+    @Before
     public void setUp() {
-        // 1. Create object to be tested
         account = new CreateAccount();
     }
 
@@ -59,5 +55,5 @@ public class CreateAccountTest {
             assertTrue(e != null);
         }
     }
+} // ← this is the closing brace for the class
 
-}

@@ -2,26 +2,16 @@ package bankapp;
 
 import java.util.List;
 import java.util.Map;
-import java.util.*;
 import java.util.regex.*;
-import java.util.Scanner;
 
 public class UpdateAccount {
 
     private Map<Integer, List<Object>> accounts;
 
     public UpdateAccount(Map<Integer, List<Object>> accounts) {
-
         this.accounts = accounts;
     }
 
-    public void displayOptions(){
-        System.out.println("What Information do you want to update?: ");
-        System.out.println("1. Name");
-        System.out.println("2. Phone Number");
-        System.out.println("3. Email");
-        System.out.println("4. Exit");
-    }
 
     public void validAccountNumber(int accountNumber){
         if(!accounts.containsKey(accountNumber)){

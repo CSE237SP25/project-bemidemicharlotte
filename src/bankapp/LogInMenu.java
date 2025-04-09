@@ -111,7 +111,7 @@ public class LogInMenu {
                 setAccounts(menu.getAccounts());
 			    int userChoice = menu.readIntFromPlayer();
 	            menu.processUserInput(userChoice);
-	            if (userChoice == 12 || userChoice == 13) {
+	            if (userChoice == 13 || userChoice == 14) {
 	        	    break;
 	            }
 		    }

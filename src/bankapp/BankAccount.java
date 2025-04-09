@@ -42,11 +42,7 @@ public class BankAccount {
 		this.spending=amount;
 		this.balance -= amount;
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime()));
-		
 	}
-	
-
-	
 	
 	public double getCurrentBalance() {
 		return this.balance;
@@ -113,11 +109,11 @@ public class BankAccount {
 			}
 		}).start();
 	}
+	
 	public void setSpendingLimit(double limit) {
 		if (limit < 0) {
 			throw new IllegalArgumentException("Spending limit must be non-negative.");
 		}
 		this.spendingLimit = limit;
 	}
-
 }

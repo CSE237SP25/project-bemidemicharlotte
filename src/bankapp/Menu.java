@@ -1,5 +1,6 @@
 package bankapp;
 import java.util.*;
+
 public class Menu {
 	private BankAccount theAccount;
 	private FixedDeposit fixedDeposit;
@@ -10,6 +11,7 @@ public class Menu {
     private Map<Integer, List<Object>> accounts;
     private int currentAccountNumber;
     private Scanner keyboardInput;
+    
     public Menu() {
         theAccount = new BankAccount();
         fixedDeposit = new FixedDeposit();
@@ -23,18 +25,22 @@ public class Menu {
     public BankAccount getAccount() {
         return theAccount;
     }
+    
     public void setAccounts(Map<Integer, List<Object>> accounts){
         this.accounts = accounts;
     }
-    public Map<Integer, List<Object>> getAccounts(){
+    
+    public Map<Integer, List<Object>> getAccounts() {
         return accounts;
     }
-    public void currentBankAccount(int accountNumber){
+    
+    public void currentBankAccount(int accountNumber) {
         this.currentAccountNumber = accountNumber;
         this.theAccount = (BankAccount)this.accounts.get(accountNumber).get(4);
         
         this.categorizeSpending = new CategorizeSpending(this.theAccount);
     }
+    
     public void displayOptions() {
 		 System.out.println("\n ~ Bank Menu ~");
          System.out.println("1. Deposit");
@@ -48,13 +54,13 @@ public class Menu {
          System.out.println("9. Schedule a Transfer");
          System.out.println("10. Set Spending Limit");
          System.out.println("11. Categorize Spending");
-         System.out.println("12. Money Management Advise");
+         System.out.println("12. Money Management Advice");
          System.out.println("13. Logout");
          System.out.println("14. Delete Account");
     }
     
     public int readIntFromPlayer() {
-		System.out.println("Enter your choice: ");
+		System.out.println("\n Enter your choice: ");
 		int userChoice = keyboardInput.nextInt();
         keyboardInput.nextLine();
         return userChoice;
@@ -100,12 +106,12 @@ public class Menu {
 	        	break;
 	        case 13:
 	        	break;
-	        	//logout
+	        	// logout
 	        case 14: 
 	        	handleDelete();
 	        	break;
 	        default:
-	        	System.out.println("Invalid choice. Please enter a number between 1 and 10");
+	        	System.out.println("Invalid choice. Please enter a number between 1 and 14");
 	    }
     }
     public void handleUpdateAccount() {
@@ -113,22 +119,22 @@ public class Menu {
         updateAccountMenu.setBankAccount(theAccount);
         updateAccountMenu.setAccountNumber(currentAccountNumber);
         //pass in the account number
-        while(true){
+        while(true) {
             updateAccountMenu.setAccounts(this.accounts);
             updateAccountMenu.displayOptions();
             int userChoice = updateAccountMenu.readIntFromPlayer();
             updateAccountMenu.processuserInput(userChoice);
             //update the account number
             this.accounts = updateAccountMenu.getAccounts();
-            if(userChoice == 4){
+            if(userChoice == 4) {
                 break;
             }
         }
     }
-    public void handleDelete(){
+    public void handleDelete() {
         this.accounts.remove(this.currentAccountNumber);
     }
-    public void displayAccountDetails(int accountNumber){
+    public void displayAccountDetails(int accountNumber) {
             System.out.println("Account Number: " + accountNumber);
             System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
             System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
@@ -211,6 +217,7 @@ public class Menu {
             System.out.println("Scheduling failed: " + e.getMessage());
         }
     }
+    
     public void handleSetSpendingLimit() {
         System.out.print("Enter your desired spending limit: ");
         double limit = keyboardInput.nextDouble();

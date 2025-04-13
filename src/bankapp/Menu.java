@@ -135,8 +135,13 @@ public class Menu {
     public void handleDeposit() {
     	System.out.println("Please enter deposit amount: ");
         double amountToDeposit = keyboardInput.nextDouble();
-        processDeposit(amountToDeposit);
-        System.out.println("You deposited $" + amountToDeposit + " into your account.");
+        keyboardInput.nextLine();
+
+        System.out.print("Enter category for this deposit: ");
+        String category = keyboardInput.nextLine();
+
+        theAccount.deposit(amountToDeposit, category);
+        System.out.println("You deposited $" + amountToDeposit + " into your account under category: " + category);
     }
     
     public void handleViewProfile() {
@@ -155,8 +160,17 @@ public class Menu {
     public void handleWithdrawal() {
     	System.out.println("Please enter withdrawal amount: ");
         double amountToWithdraw = keyboardInput.nextDouble();
-        processWithdrawal(amountToWithdraw);
-        System.out.println("You withdrew $" + amountToWithdraw + " from your account.");
+        keyboardInput.nextLine();
+
+        System.out.print("Enter category for this withdrawal: ");
+        String category = keyboardInput.nextLine();
+
+        try {
+            theAccount.withdraw(amountToWithdraw, category);
+            System.out.println("You withdrew $" + amountToWithdraw + " from your account under category: " + category);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Withdrawal failed: " + e.getMessage());
+        }
     }
     
     public void processWithdrawal(double amount) {

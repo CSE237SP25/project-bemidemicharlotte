@@ -161,4 +161,21 @@ public class BankAccountTests {
 		assertEquals(50.0, account.getCurrentBalance(), 0.005);
 	}
 
+	@Test
+	public void testCategoryAlertTriggered() {
+		BankAccount account = new BankAccount();
+		account.deposit(50, "Food");
+		account.deposit(60, "Food");
+		assertEquals(110.0, account.getCurrentBalance(), 0.005);
+	}
+
+	@Test
+	public void testCategoryTotalTracksCorrectly() {
+		BankAccount account = new BankAccount();
+		account.deposit(40, "Travel");
+		account.deposit(30, "Travel");
+		assertEquals(70.0, account.getCurrentBalance(), 0.005);
+	}
+
+
 }

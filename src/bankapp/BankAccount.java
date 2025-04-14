@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
 
 public class BankAccount {
 
@@ -14,14 +16,14 @@ public class BankAccount {
 	private double spendingLimit;
 	public double spending;
 	private List<Transaction> transactionHistory;
+	private Map<String, SpendingCategory> categoryMap;
 
-	
 	public BankAccount() {
 		this.balance = 0;
 		this.spendingLimit = Double.MAX_VALUE;
 		this.spending=0;
 		this.transactionHistory = new ArrayList<>();
-
+		this.categoryMap = new HashMap<>();
 	}
 	
 	public void deposit(double amount) {
@@ -29,7 +31,8 @@ public class BankAccount {
 			throw new IllegalArgumentException();
 		}
 		this.balance += amount;
-		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime()));
+		trackSpending(category, amount);
+		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime(), category));
 	}
 	
 	public void withdraw(double amount) {
@@ -41,7 +44,8 @@ public class BankAccount {
 		}
 		this.spending=amount;
 		this.balance -= amount;
-		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime()));
+		trackSpending(category, amount);
+		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime(), category));
 	}
 	
 	public double getCurrentBalance() {
@@ -115,5 +119,17 @@ public class BankAccount {
 			throw new IllegalArgumentException("Spending limit must be non-negative.");
 		}
 		this.spendingLimit = limit;
+	}
+
+	public void trackSpending(String category, double amount) {
+		if (!categoryMap.containsKey(category)) {
+			categoryMap.put(category, new SpendingCategory(category, 100));
+		}
+		SpendingCategory cat = categoryMap.get(category);
+		cat.addSpending(amount);
+
+		if (cat.isOverLimit()) {
+			System.out.println("Alert: You’ve exceeded your $" + cat.getThreshold() + " limit for " + category + " spending.");
+		}
 	}
 }

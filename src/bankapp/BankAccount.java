@@ -3,20 +3,25 @@ package bankapp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+
 
 public class BankAccount {
 
 	private double balance;
 	private double spendingLimit;
+	public double spending;
 	private List<Transaction> transactionHistory;
 	private Map<String, SpendingCategory> categoryMap;
 
 	public BankAccount() {
 		this.balance = 0;
 		this.spendingLimit = Double.MAX_VALUE;
+		this.spending=0;
 		this.transactionHistory = new ArrayList<>();
 		this.categoryMap = new HashMap<>();
 	}
@@ -37,6 +42,7 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
+		this.spending=amount;
 		this.balance -= amount;
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime(), category));
@@ -107,12 +113,14 @@ public class BankAccount {
 			}
 		}).start();
 	}
+	
 	public void setSpendingLimit(double limit) {
 		if (limit < 0) {
 			throw new IllegalArgumentException("Spending limit must be non-negative.");
 		}
 		this.spendingLimit = limit;
 	}
+
 	public void trackSpending(String category, double amount) {
 		if (!categoryMap.containsKey(category)) {
 			categoryMap.put(category, new SpendingCategory(category, 100));
@@ -124,5 +132,4 @@ public class BankAccount {
 			System.out.println("Alert: You’ve exceeded your $" + cat.getThreshold() + " limit for " + category + " spending.");
 		}
 	}
-
 }

@@ -11,19 +11,8 @@ For each iteration you should answer the following:
 
 What user stories were completed this iteration?
 
-* Create a bank account
-* Select tasks from the menu
-* View transaction history
-* Do deposit into an account
-* Withdraw from an account
-* Do fixed deposit by interest rate
-* Update account information
-* Check account balance
-* Transfer money between different accounts
-
-What user stories do you intend to complete next iteration?
-
-* Log out from an account
+* Create an account
+* Log In and Log out from an account
 * View profile information
 * Setting a monthly budget
 * Delete an account
@@ -32,6 +21,12 @@ What user stories do you intend to complete next iteration?
 * Manage money by specific plans
 * Update transaction history
 * Categorize money spending
+
+What user stories do you intend to complete next iteration?
+
+* Send money to different accounts within the bank
+* User should be able to change password based off knowing the answer to a question about themselves (collected when they created the account)
+* 
 
 Is there anything that you implemented but doesn't currently work?
 

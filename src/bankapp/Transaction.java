@@ -25,4 +25,10 @@ public class Transaction {
 	public double getAmount() {
 		return amount;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + time + "] " + type + ": $" + amount + (category != null ? " (Category: " + category + ")" : "");
+	}
+
 }

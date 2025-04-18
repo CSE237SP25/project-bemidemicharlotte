@@ -4,11 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="615ec8d0-ffe6-4582-8bbc-3db1cc13ff14" name="Changes" comment="" />
+    <list default="true" id="615ec8d0-ffe6-4582-8bbc-3db1cc13ff14" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bankapp/BankAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bankapp/BankAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bankapp/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bankapp/Menu.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -31,7 +42,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "setSpendingLimit",
+    "git-widget-placeholder": "exportTransactionHistory",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/emilyhan/project-bemidemicharlotte",
     "node.js.detected.package.eslint": "true",
@@ -42,19 +53,6 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="project-bemidemicharlotte" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="project-bemidemicharlotte" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -76,6 +74,10 @@
       <workItem from="1742944871057" duration="2032000" />
       <workItem from="1743702361881" duration="619000" />
       <workItem from="1744084125886" duration="1293000" />
+      <workItem from="1744564778679" duration="1290000" />
+      <workItem from="1744602519695" duration="539000" />
+      <workItem from="1744861596297" duration="17000" />
+      <workItem from="1744964696557" duration="698000" />
     </task>
     <servers />
   </component>

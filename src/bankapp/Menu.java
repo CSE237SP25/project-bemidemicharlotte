@@ -59,7 +59,9 @@ public class Menu {
          System.out.println("12. Money Management Advice");
          System.out.println("13. Logout");
          System.out.println("14. Delete Account");
-         System.out.println("15. Back");
+         System.out.println("15. Export Transaction History to File");
+         System.out.println("16. Back");
+
     }
     
     public int readIntFromPlayer() {
@@ -113,7 +115,10 @@ public class Menu {
 	        case 14: 
 	        	handleDelete();
 	        	break;
-	        case 15:
+          case 15:
+                handleExportHistory();
+                break;
+	        case 16:
 	        	handleBackToLogin();
 	        	break;
 	        default:
@@ -226,7 +231,7 @@ public class Menu {
     }
     
     public void processWithdrawal(double amount) {
-        theAccount.withdraw(amount);
+        theAccount.withdraw(amount, "SomeCategory");
     }
     
     public void handleInterest() {
@@ -376,4 +381,12 @@ public class Menu {
     public void handleBackToMenu() {
     	displayOptions();
     }
+
+    public void handleExportHistory() {
+        System.out.print("Enter a filename to save history (e.g. history.txt): ");
+        keyboardInput.nextLine();
+        String filename = keyboardInput.nextLine();
+        theAccount.exportTransactionHistory(filename);
+    }
+
 }

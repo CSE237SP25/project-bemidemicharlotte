@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import bankapp.BankAccount;
 import bankapp.FixedDeposit;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class BankAccountTests {
 
 	@Test
@@ -181,5 +185,20 @@ public class BankAccountTests {
 		assertEquals(70.0, account.getCurrentBalance(), 0.005);
 	}
 
+	@Test
+	public void testExportTransactionHistory() {
+		BankAccount account = new BankAccount();
+		account.deposit(100, "Test");
+		account.withdraw(20, "Test");
 
+		String filename = "test_history_output.txt";
+		account.exportTransactionHistory(filename);
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+			String content = reader.readLine();
+			assertTrue(content.contains("Transaction History") || content.contains("Deposit") || content.contains("Withdrawal"));
+		} catch (IOException e) {
+			fail("Failed to read exported file.");
+		}
+	}
 }

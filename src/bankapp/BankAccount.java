@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class BankAccount {
@@ -34,8 +36,8 @@ public class BankAccount {
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime(), category));
 	}
-	
-	public void withdraw(double amount) {
+
+	public void withdraw(double amount, String category) {
 		if (amount > balance)   {
 			 throw new IllegalArgumentException("Insufficient funds.");
 		} 
@@ -130,6 +132,21 @@ public class BankAccount {
 
 		if (cat.isOverLimit()) {
 			System.out.println("Alert: You’ve exceeded your $" + cat.getThreshold() + " limit for " + category + " spending.");
+		}
+	}
+	public void exportTransactionHistory(String filename) {
+		try (FileWriter writer = new FileWriter(filename)) {
+			if (transactionHistory.isEmpty()) {
+				writer.write("No recent transaction history\n");
+			} else {
+				writer.write("Transaction History:\n");
+				for (Transaction t : transactionHistory) {
+					writer.write(t.toString() + "\n");
+				}
+			}
+			System.out.println("Exported to " + filename);
+		} catch (IOException e) {
+			System.out.println("Error exporting: " + e.getMessage());
 		}
 	}
 }

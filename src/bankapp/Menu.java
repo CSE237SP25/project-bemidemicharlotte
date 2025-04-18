@@ -11,6 +11,7 @@ public class Menu {
     private Map<Integer, List<Object>> accounts;
     private int currentAccountNumber;
     private Scanner keyboardInput;
+    private LogInMenu login;
     
     public Menu() {
         theAccount = new BankAccount();
@@ -20,6 +21,7 @@ public class Menu {
         moneyManagement = new MoneyManagement();
         categorizeSpending = new CategorizeSpending(theAccount);
         currentAccountNumber = 0;
+        login = new LogInMenu();
     }
     
     public BankAccount getAccount() {
@@ -57,6 +59,7 @@ public class Menu {
          System.out.println("12. Money Management Advice");
          System.out.println("13. Logout");
          System.out.println("14. Delete Account");
+         System.out.println("15. Back");
     }
     
     public int readIntFromPlayer() {
@@ -110,6 +113,9 @@ public class Menu {
 	        case 14: 
 	        	handleDelete();
 	        	break;
+	        case 15:
+	        	handleBackToLogin();
+	        	break;
 	        default:
 	        	System.out.println("Invalid choice. Please enter a number between 1 and 14");
 	    }
@@ -120,6 +126,16 @@ public class Menu {
         updateAccountMenu.setAccountNumber(currentAccountNumber);
         //pass in the account number
         while(true) {
+        	
+            //back
+            System.out.println("Press 0 to go back");
+            int back = keyboardInput.nextInt();
+            keyboardInput.nextLine();
+            if(back==0) {
+            	handleBackToMenu();
+            	break;
+            }
+            
             updateAccountMenu.setAccounts(this.accounts);
             updateAccountMenu.displayOptions();
             int userChoice = updateAccountMenu.readIntFromPlayer();
@@ -132,7 +148,17 @@ public class Menu {
         }
     }
     public void handleDelete() {
+    	while(true) {
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
         this.accounts.remove(this.currentAccountNumber);
+    	}
     }
     public void displayAccountDetails(int accountNumber) {
             System.out.println("Account Number: " + accountNumber);
@@ -147,6 +173,15 @@ public class Menu {
 
         System.out.print("Enter category for this deposit: ");
         String category = keyboardInput.nextLine();
+        
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
 
         theAccount.deposit(amountToDeposit, category);
         System.out.println("You deposited $" + amountToDeposit + " into your account under category: " + category);
@@ -172,6 +207,15 @@ public class Menu {
 
         System.out.print("Enter category for this withdrawal: ");
         String category = keyboardInput.nextLine();
+        
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
 
         try {
             theAccount.withdraw(amountToWithdraw, category);
@@ -186,11 +230,22 @@ public class Menu {
     }
     
     public void handleInterest() {
+    	while(true) {
     	fixedDeposit.printTerm();
+    	
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
     	int accountTerm = keyboardInput.nextInt();
     	double accountDeposit = fixedDeposit.getDeposit();
     	double accountCD = processInterest(accountTerm, accountDeposit);	
     	System.out.println("You will eventually get $" + accountCD + " from the fixed deposit");
+    	}
     }
     
     public double processInterest(int term, double deposit) {
@@ -205,9 +260,18 @@ public class Menu {
     }
     
     public void handleTransfer() {
+    	while(true) {
         System.out.println("Enter amount to transfer: ");
         double amountToTransfer = keyboardInput.nextDouble();
         BankAccount recipientAccount = new BankAccount();
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
         try {
             theAccount.transferTo(recipientAccount, amountToTransfer);
             System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
@@ -216,45 +280,84 @@ public class Menu {
         } catch (IllegalArgumentException e) {
             System.out.println("Transfer failed: " + e.getMessage());
         }
+    	}
     }
   
     public void handleScheduledTransfer() {
+    	while(true) {
         BankAccount recipientAccount = new BankAccount();
         System.out.print("Enter amount to transfer: ");
         double amount = keyboardInput.nextDouble();
         System.out.print("Enter delay time in seconds: ");
         int delayInSeconds = keyboardInput.nextInt();
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
         try {
             theAccount.scheduleTransfer(recipientAccount, amount, delayInSeconds);
             System.out.println("Transfer of $" + amount + " scheduled in " + delayInSeconds + " seconds.");
         } catch (IllegalArgumentException e) {
             System.out.println("Scheduling failed: " + e.getMessage());
         }
+    	}
     }
     
     public void handleSetSpendingLimit() {
+    	while(true) {
         System.out.print("Enter your desired spending limit: ");
         double limit = keyboardInput.nextDouble();
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
         try {
             theAccount.setSpendingLimit(limit);
             System.out.println("Spending limit set to $" + limit);
         } catch (IllegalArgumentException e) {
             System.out.println("Failed to set limit: " + e.getMessage());
         }
+    	}
     }
     
     public void handleCategory() {
+    	while(true) {
     	System.out.println("Select a category for you last withdrawal:");
     	categorizeSpending.viewCategory();
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
     	int choice = keyboardInput.nextInt();
     	categorizeSpending.processCategory(choice);
     	categorizeSpending.showCategory();
+    	}
     }
     
     public void handleManagement() {
+    	while(true) {
         System.out.println("Select a goal for your money:");
         moneyManagement.goalAdvisory();
-        
+        //back
+        System.out.println("Press 0 to go back");
+        int back = keyboardInput.nextInt();
+        keyboardInput.nextLine();
+        if(back==0) {
+        	handleBackToMenu();
+        	break;
+        }
         int choice = keyboardInput.nextInt();
         if (choice == 1) {
             System.out.print("Enter your monthly income: ");
@@ -262,5 +365,15 @@ public class Menu {
             moneyManagement.setIncome(income);
         }
         moneyManagement.adviseNavigation(choice);
+    	}
+    }
+    
+    public void handleBackToLogin() {
+    	login.displayOptions();
+    }
+    
+    
+    public void handleBackToMenu() {
+    	displayOptions();
     }
 }

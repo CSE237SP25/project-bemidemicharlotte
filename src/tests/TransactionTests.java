@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import bankapp.BankAccount;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+
 public class TransactionTests {
 	
 	@Test

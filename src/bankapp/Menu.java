@@ -202,7 +202,7 @@ public class Menu {
     }
     
     public void processDeposit(double amount) {
-        theAccount.deposit(amount);
+        theAccount.deposit(amount, "General");
     }
     
     public void handleWithdrawal() {

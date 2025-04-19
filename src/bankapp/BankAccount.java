@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.FileWriter;
@@ -28,13 +27,16 @@ public class BankAccount {
 		this.categoryMap = new HashMap<>();
 	}
 	
-	public void deposit(double amount) {
+	public void deposit(double amount, String category) {
 		if(amount < 0) {
 			throw new IllegalArgumentException();
 		}
 		this.balance += amount;
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime(), category));
+	}
+	public void deposit(double amount) {
+		deposit(amount, "General");
 	}
 
 	public void withdraw(double amount, String category) {
@@ -49,6 +51,9 @@ public class BankAccount {
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime(), category));
 	}
+	public void withdraw(double amount) {
+		withdraw(amount, "General");
+	}
 	
 	public double getCurrentBalance() {
 		return this.balance;
@@ -58,13 +63,12 @@ public class BankAccount {
 		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
         return localDateFormat.format(new Date());
 	}
-	
+
 	public double getFinalBalance(FixedDeposit fixedDeposit) {
-		transactionHistory.add(new Transaction("Fixed Deposit", fixedDeposit.getFinalDeposit(), getCurrentTime()));
+		transactionHistory.add(new Transaction("Fixed Deposit", fixedDeposit.getFinalDeposit(), getCurrentTime(), "Investment"));
 		return this.balance + fixedDeposit.getFinalDeposit();
 	}
 
-	
 	public int getTransactionCount() {
 	    return transactionHistory.size();
 	}
@@ -89,11 +93,11 @@ public class BankAccount {
 			throw new IllegalArgumentException("Insufficient funds.");
 		}
 
-		this.withdraw(amount);
-		recipient.deposit(amount);
+		this.withdraw(amount, "Transfer Sent");
+		recipient.deposit(amount, "Transfer Received");
 
-		this.transactionHistory.add(new Transaction("Transfer Sent", amount, getCurrentTime()));
-		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, getCurrentTime()));
+		this.transactionHistory.add(new Transaction("Transfer Sent", amount, getCurrentTime(), "Tansfer"));
+		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, getCurrentTime(), "Transfer"));
 	}
 
 	public void scheduleTransfer(BankAccount recipient, double amount, int delayInSeconds) {
@@ -107,8 +111,8 @@ public class BankAccount {
 		new Thread(() -> {
 			try {
 				Thread.sleep(delayInSeconds * 1000);
-				this.withdraw(amount);
-				recipient.deposit(amount);
+				this.withdraw(amount, "Scheduled Transfer");
+				recipient.deposit(amount, "Scheduled Transfer");
 				System.out.println("Transfer of $" + amount + " completed after " + delayInSeconds + " seconds.");
 			} catch (InterruptedException e) {
 				System.out.println("Transfer interrupted.");

@@ -2,7 +2,6 @@ package tests;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.*;
 
 import bankapp.UpdateAccountMenu;

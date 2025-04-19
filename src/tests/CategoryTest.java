@@ -1,6 +1,7 @@
 package tests;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import bankapp.CategorizeSpending;
 import bankapp.BankAccount;
 public class CategoryTest {
@@ -22,7 +23,7 @@ public class CategoryTest {
 	    public void testMultipleCategorySpending() {
 			BankAccount account = new BankAccount();
 			CategorizeSpending cs = new CategorizeSpending(account); 
-			account.deposit(200);
+			account.deposit(200, "General");
 			
 			account.spending = 100;  
 			cs.processCategory(4);  

@@ -185,7 +185,7 @@ public class Menu {
         keyboardInput.nextLine();
         if(back==0) {
         	handleBackToMenu();
-        	break;
+        	return;
         }
 
         theAccount.deposit(amountToDeposit, category);
@@ -219,7 +219,7 @@ public class Menu {
         keyboardInput.nextLine();
         if(back==0) {
         	handleBackToMenu();
-        	break;
+        	return;
         }
 
         try {

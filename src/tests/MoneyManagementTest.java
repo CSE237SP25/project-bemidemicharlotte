@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.junit.Test;
-
 import bankapp.MoneyManagement;
 
 public class MoneyManagementTest {

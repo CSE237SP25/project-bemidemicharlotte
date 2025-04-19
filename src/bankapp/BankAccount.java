@@ -35,6 +35,9 @@ public class BankAccount {
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime(), category));
 	}
+	public void deposit(double amount) {
+		deposit(amount, "General");
+	}
 
 	public void withdraw(double amount, String category) {
 		if (amount > balance)   {
@@ -47,6 +50,9 @@ public class BankAccount {
 		this.balance -= amount;
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime(), category));
+	}
+	public void withdraw(double amount) {
+		withdraw(amount, "General");
 	}
 	
 	public double getCurrentBalance() {

@@ -50,7 +50,7 @@ public class Menu {
          System.out.println("3. View Transaction History");
          System.out.println("4. Check Current Balance");
          System.out.println("5. Fixed Deposit");
-         System.out.println("6. Transfer Between Accounts");
+         System.out.println("6. Transfer To Different Account");
          System.out.println("7. Update Account Information");
          System.out.println("8. View My Profile");
          System.out.println("9. Schedule a Transfer");
@@ -60,6 +60,7 @@ public class Menu {
          System.out.println("13. Logout");
          System.out.println("14. Delete Account");
          System.out.println("15. Export Transaction History to File");
+         //Maybe not put it as an option, it makes it look like they want to go back to the sign in page
          System.out.println("16. Back");
 
     }
@@ -133,6 +134,7 @@ public class Menu {
         while(true) {
         	
             //back
+            //What if they don't want to go back? This statement doesn't allow them to keep going on with the process
             System.out.println("Press 0 to go back");
             int back = keyboardInput.nextInt();
             keyboardInput.nextLine();
@@ -178,6 +180,9 @@ public class Menu {
 
         System.out.print("Enter category for this deposit: ");
         String category = keyboardInput.nextLine();
+        theAccount.deposit(amountToDeposit, category);
+        //gets an alert saying we overdeposited by $100 when I deposit 200
+        System.out.println("You deposited $" + amountToDeposit + " into your account under category: " + category);
         
         //back
         System.out.println("Press 0 to go back");
@@ -185,11 +190,7 @@ public class Menu {
         keyboardInput.nextLine();
         if(back==0) {
         	handleBackToMenu();
-        	return;
         }
-
-        theAccount.deposit(amountToDeposit, category);
-        System.out.println("You deposited $" + amountToDeposit + " into your account under category: " + category);
     }
     
     public void handleViewProfile() {
@@ -261,31 +262,28 @@ public class Menu {
     public void handleTotalBalance() {
     	FixedDeposit fd = new FixedDeposit();
     	double accountFinalDeposit = theAccount.getFinalBalance(fd);
-    	System.out.println("Your final balance is $"+ accountFinalDeposit +".");
+    	System.out.println("Your current balance is $"+ accountFinalDeposit +".");
     }
     
-    public void handleTransfer() {
-    	while(true) {
-        System.out.println("Enter amount to transfer: ");
-        double amountToTransfer = keyboardInput.nextDouble();
-        BankAccount recipientAccount = new BankAccount();
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
+   public void handleTransfer() {
+        System.out.println("Enter account number to transfer to: ");
+        int receivingAccountNumber = keyboardInput.nextInt();
+        if(this.accounts.containsKey(receivingAccountNumber)){
+            BankAccount recipientAccount = (BankAccount)this.accounts.get(receivingAccountNumber).get(4);
+            try {
+                System.out.println("Enter amount to transfer: ");
+                double amountToTransfer = keyboardInput.nextDouble();
+                keyboardInput.nextLine();
+                theAccount.transferTo(recipientAccount, amountToTransfer);
+                System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
+                System.out.println("Your new balance: $" + theAccount.getCurrentBalance());
+                System.out.println("Recipient balance: $" + recipientAccount.getCurrentBalance());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Transfer failed: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Incorrect Account Number");
         }
-        try {
-            theAccount.transferTo(recipientAccount, amountToTransfer);
-            System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
-            System.out.println("Your new balance: $" + theAccount.getCurrentBalance());
-            System.out.println("Recipient balance: $" + recipientAccount.getCurrentBalance());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Transfer failed: " + e.getMessage());
-        }
-    	}
     }
   
     public void handleScheduledTransfer() {

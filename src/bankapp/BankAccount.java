@@ -1,14 +1,13 @@
 package bankapp;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.IOException;
 
 
 public class BankAccount {
@@ -93,6 +92,7 @@ public class BankAccount {
 			throw new IllegalArgumentException("Insufficient funds.");
 		}
 
+		//calling withdraw and deposit already adds to the transaction history, adding again is redundant
 		this.withdraw(amount, "Transfer Sent");
 		recipient.deposit(amount, "Transfer Received");
 

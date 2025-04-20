@@ -4,11 +4,9 @@ import java.util.*;
 public class Menu {
 	private BankAccount theAccount;
 	private FixedDeposit fixedDeposit;
-    private CreateAccount newAccount;
-    private UpdateAccount updateAccount;
     private CategorizeSpending categorizeSpending;
     private MoneyManagement moneyManagement;
-    private Map<Integer, List<Object>> accounts;
+    private Map<Integer, BankAccount> accounts;
     private int currentAccountNumber;
     private Scanner keyboardInput;
     private LogInMenu login;
@@ -28,18 +26,17 @@ public class Menu {
         return theAccount;
     }
     
-    public void setAccounts(Map<Integer, List<Object>> accounts){
+    public void setAccounts(Map<Integer, BankAccount> accounts){
         this.accounts = accounts;
     }
     
-    public Map<Integer, List<Object>> getAccounts() {
+    public Map<Integer, BankAccount> getAccounts() {
         return accounts;
     }
     
     public void currentBankAccount(int accountNumber) {
         this.currentAccountNumber = accountNumber;
-        this.theAccount = (BankAccount)this.accounts.get(accountNumber).get(4);
-        
+        this.theAccount = (BankAccount)this.accounts.get(accountNumber);
         this.categorizeSpending = new CategorizeSpending(this.theAccount);
     }
     
@@ -132,7 +129,6 @@ public class Menu {
         updateAccountMenu.setAccountNumber(currentAccountNumber);
         //pass in the account number
         while(true) {
-        	
             //back
             //What if they don't want to go back? This statement doesn't allow them to keep going on with the process
             System.out.println("Press 0 to go back");
@@ -142,37 +138,27 @@ public class Menu {
             	handleBackToMenu();
             	break;
             }
-            
-            updateAccountMenu.setAccounts(this.accounts);
             updateAccountMenu.displayOptions();
             int userChoice = updateAccountMenu.readIntFromPlayer();
             updateAccountMenu.processuserInput(userChoice);
             //update the account number
-            this.accounts = updateAccountMenu.getAccounts();
+            this.theAccount = updateAccountMenu.getBankAccount();
             if(userChoice == 4) {
                 break;
             }
         }
     }
     public void handleDelete() {
-    	while(true) {
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
-        }
-        this.accounts.remove(this.currentAccountNumber);
-    	}
+    	this.accounts.remove(this.currentAccountNumber);
     }
+
     public void displayAccountDetails(int accountNumber) {
             System.out.println("Account Number: " + accountNumber);
-            System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
-            System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
-            System.out.println("Email: " + this.accounts.get(accountNumber).get(2));
+            System.out.println("Name: " + theAccount.getName());
+            System.out.println("Phone Number: " + theAccount.getPhoneNumber());
+            System.out.println("Email: " + theAccount.getEmail());
     }
+
     public void handleDeposit() {
     	System.out.println("Please enter deposit amount: ");
         double amountToDeposit = keyboardInput.nextDouble();
@@ -269,7 +255,7 @@ public class Menu {
         System.out.println("Enter account number to transfer to: ");
         int receivingAccountNumber = keyboardInput.nextInt();
         if(this.accounts.containsKey(receivingAccountNumber)){
-            BankAccount recipientAccount = (BankAccount)this.accounts.get(receivingAccountNumber).get(4);
+            BankAccount recipientAccount = this.accounts.get(receivingAccountNumber);
             try {
                 System.out.println("Enter amount to transfer: ");
                 double amountToTransfer = keyboardInput.nextDouble();
@@ -277,7 +263,6 @@ public class Menu {
                 theAccount.transferTo(recipientAccount, amountToTransfer);
                 System.out.println("Transferred $" + amountToTransfer + " to the recipient account.");
                 System.out.println("Your new balance: $" + theAccount.getCurrentBalance());
-                System.out.println("Recipient balance: $" + recipientAccount.getCurrentBalance());
             } catch (IllegalArgumentException e) {
                 System.out.println("Transfer failed: " + e.getMessage());
             }

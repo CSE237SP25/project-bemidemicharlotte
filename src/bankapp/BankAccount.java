@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.*;
 
 
 public class BankAccount {
@@ -17,6 +18,14 @@ public class BankAccount {
 	public double spending;
 	private List<Transaction> transactionHistory;
 	private Map<String, SpendingCategory> categoryMap;
+	private String email;
+    private String phoneNumber;
+    private int accountNumber;
+    private String name;
+    private String password;
+	private String securityQuestion;
+	private String securityAnswer;
+    private Map<Integer, List<Object>> accounts;
 
 	public BankAccount() {
 		this.balance = 0;
@@ -24,6 +33,70 @@ public class BankAccount {
 		this.spending=0;
 		this.transactionHistory = new ArrayList<>();
 		this.categoryMap = new HashMap<>();
+	}
+
+	public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+
+        if (matcher.matches()) {
+            this.email = email;
+        } else {
+            throw new IllegalArgumentException("Invalid email format.");
+        }
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        String phoneRegex = "^(\\+\\d{1,3}\\s?)?(\\(\\d{3}\\)|\\d{3})[-.\\s]?\\d{3}[-.\\s]?\\d{4}$";
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+
+        if (matcher.matches()) {
+            this.phoneNumber = phoneNumber;
+        } else {
+            throw new IllegalArgumentException("Invalid phone number format.");
+        }
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+	public void setSecurityQuestion(String question){
+		this.securityQuestion = question;
+	}
+
+	public void setAnswer(String answer){
+		this.securityAnswer = answer.toLowerCase();
+	}
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getPhoneNumber(){
+        return this.phoneNumber;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+	public String getPassword(){
+		return this.password;
+	}
+
+	public String getSecurityQuestion(){
+		return this.securityQuestion;
+	}
+
+	public String getSecurityAnswer(){
+		return this.securityAnswer;
 	}
 	
 	public void deposit(double amount, String category) {

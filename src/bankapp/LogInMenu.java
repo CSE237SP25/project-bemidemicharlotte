@@ -3,9 +3,8 @@ import java.util.*;
 
 
 public class LogInMenu {
-    private Map<Integer, List<Object>> accounts;
+    private Map<Integer, BankAccount> accounts;
     private Scanner keyboardInput;
-    private CreateAccount newAccount;
     private int currentAccountNumber;
     private LogIn login;
     
@@ -31,7 +30,7 @@ public class LogInMenu {
         System.out.println("3. What is the name of your first pet?");
     }
 
-    public void setAccounts(Map<Integer, List<Object>> accounts){
+    public void setAccounts(Map<Integer, BankAccount> accounts){
         this.accounts = accounts;
     }
 
@@ -74,7 +73,6 @@ public class LogInMenu {
     }
 
     public void handleCreateAccount() {
-        newAccount = new CreateAccount();
         System.out.println("Please Enter your name: ");
         String name = keyboardInput.nextLine();
         System.out.println("Please Enter your email: ");
@@ -97,40 +95,35 @@ public class LogInMenu {
         }
 
         try{
-            newAccount.setName(name);
-            newAccount.setEmail(email);
-            newAccount.setPhoneNumber(phoneNumber);
-            newAccount.setPassword(password);
             BankAccount bankAccount = new BankAccount();
-            storeAccountInfo(name, email, phoneNumber, password, bankAccount, securityQuestion, securityAnswer);
+            bankAccount.setName(name);
+            bankAccount.setEmail(email);
+            bankAccount.setPhoneNumber(phoneNumber);
+            bankAccount.setPassword(password);
+            bankAccount.setSecurityQuestion(securityQuestion);
+            bankAccount.setAnswer(securityAnswer);
+            storeAccountInfo(bankAccount);
         } catch (java.lang.Exception e) {
             System.out.println("Could not create account because: " + e.getMessage());
         }
 
     }
 
-    public void storeAccountInfo(String name, String email, String phoneNumber, String password, BankAccount bankAccount, String securityQuestion, String securityAnswer) {
+    public void storeAccountInfo(BankAccount bankAccount) {
         int accountNumber = (int) (Math.random() * 900_000_000) + 100_000_000;
         currentAccountNumber = accountNumber;
-        List<Object> accountDetails = new ArrayList<>();
-        accountDetails.add(name);
-        accountDetails.add(phoneNumber);
-        accountDetails.add(email);
-        accountDetails.add(password);
-        accountDetails.add(bankAccount);
-        accountDetails.add(securityQuestion);
-        accountDetails.add(securityAnswer);
-        this.accounts.put(accountNumber, accountDetails);
+        this.accounts.put(accountNumber, bankAccount);
         login.setAccounts(accounts);
         System.out.println("Your account has been created.");
         displayAccountDetails(accountNumber);
     }
 
+    //rewrite this
     public void displayAccountDetails(int accountNumber){
             System.out.println("Account Number: " + accountNumber);
-            System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
-            System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
-            System.out.println("Email: " + this.accounts.get(accountNumber).get(2));
+            System.out.println("Name: " + this.accounts.get(accountNumber).getName());
+            System.out.println("Phone Number: " + this.accounts.get(accountNumber).getPhoneNumber());
+            System.out.println("Email: " + this.accounts.get(accountNumber).getEmail());
     }
 
     public void handleLogIn(){
@@ -167,12 +160,12 @@ public class LogInMenu {
         keyboardInput.nextLine();
         try {
             login.accountCorrect(accountNumber);
-            System.out.println(this.accounts.get(accountNumber).get(5));
+            System.out.println(this.accounts.get(accountNumber).getSecurityQuestion());
             String answer = keyboardInput.nextLine();
-            if(answer.toLowerCase().equals(this.accounts.get(accountNumber).get(6))){
+            if(answer.toLowerCase().equals(this.accounts.get(accountNumber).getSecurityAnswer())){
                 System.out.println("Enter new Password:");
                 String newPassword = keyboardInput.nextLine();
-                this.accounts.get(accountNumber).set(3, newPassword);
+                this.accounts.get(accountNumber).setPassword(newPassword);
                 System.out.println("Your password has been updated, please log in with your new password");
             }
             else{

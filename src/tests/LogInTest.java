@@ -8,6 +8,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 import bankapp.LogIn;
+import bankapp.BankAccount;
 
 public class LogInTest {
 
@@ -18,12 +19,13 @@ public class LogInTest {
         login = new LogIn();
 
         // Prepare dummy accounts
-        Map<Integer, List<Object>> accounts = new HashMap<>();
+        Map<Integer, BankAccount> accounts = new HashMap<>();
+        BankAccount aliceBankAccount = new BankAccount();
+        aliceBankAccount.setName("Alice");
+        aliceBankAccount.setPassword("pass123");
 
         // Let's say each account has: [name, age, balance, password]
-        accounts.put(1001, Arrays.asList("Alice", 25, 1000.0, "pass123"));
-        accounts.put(1002, Arrays.asList("Bob", 30, 2000.0, "secure456"));
-
+        accounts.put(1001, aliceBankAccount);
         login.setAccounts(accounts);
     }
 

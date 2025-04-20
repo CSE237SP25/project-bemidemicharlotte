@@ -4,15 +4,13 @@ import java.util.*;
 public class UpdateAccountMenu {
     private BankAccount theAccount;
     private Scanner keyboardInput;
-    private Map<Integer, List<Object>> accounts;
     private int accountNumber;
-    private UpdateAccount updateAccount;
 
 
     public UpdateAccountMenu(){
+
         this.theAccount = new BankAccount();
         this.keyboardInput = new Scanner(System.in);
-        this.accounts = new HashMap<>();
         this.accountNumber = 0;
     }
 
@@ -20,18 +18,14 @@ public class UpdateAccountMenu {
         this.theAccount = account;
     }
 
-    public void setAccounts(Map<Integer, List<Object>> accounts){
-        this.accounts = accounts;
-        this.updateAccount = new UpdateAccount(accounts);
+    public BankAccount getBankAccount(){
+        return this.theAccount;
     }
 
     public void setAccountNumber(int accountNumber){
         this.accountNumber = accountNumber;
     }
 
-    public Map<Integer, List<Object>> getAccounts(){
-        return accounts;
-    }
 
      public void displayOptions(){
         System.out.println("What Information do you want to update?: ");
@@ -70,7 +64,7 @@ public class UpdateAccountMenu {
         System.out.println("Please enter your updated name: ");
         String name = keyboardInput.nextLine();
         try{
-            this.accounts = updateAccount.updateName(accountNumber, name);
+            theAccount.setName(name);
             System.out.println("Please Find Below Your Updated Information.");
             displayAccountDetails(accountNumber);
             System.out.println();
@@ -84,7 +78,7 @@ public class UpdateAccountMenu {
         System.out.println("Please enter your new phone number: ");
         String phoneNumber = keyboardInput.nextLine();
         try{
-            this.accounts = updateAccount.updatePhoneNumber(accountNumber, phoneNumber);
+            theAccount.setPassword(phoneNumber);
             System.out.println("Please Find Below Your Updated Information.");
             displayAccountDetails(accountNumber);
             System.out.println();
@@ -98,7 +92,7 @@ public class UpdateAccountMenu {
         System.out.println("Please enter your new email address");
         String email = keyboardInput.nextLine();
         try{
-            this.accounts = updateAccount.updateEmail(accountNumber, email);
+            theAccount.setEmail(email);
             System.out.println("Please Find Below Your Updated Information.");
             displayAccountDetails(accountNumber);
             System.out.println();
@@ -110,10 +104,9 @@ public class UpdateAccountMenu {
 
     public void displayAccountDetails(int accountNumber){
             System.out.println("Account Number: " + accountNumber);
-            System.out.println("Name: " + this.accounts.get(accountNumber).get(0));
-            System.out.println("Phone Number: " + this.accounts.get(accountNumber).get(1));
-            System.out.println("Email: " + this.accounts.get(accountNumber).get(2));
+            System.out.println("Name: " + theAccount.getName());
+            System.out.println("Phone Number: " + theAccount.getPhoneNumber());
+            System.out.println("Email: " + theAccount.getEmail());
     }
-
 
 }

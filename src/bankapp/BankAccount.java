@@ -101,14 +101,11 @@ public class BankAccount {
 	
 	public void deposit(double amount, String category) {
 		if(amount < 0) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("You cannot deposit a negative amount.");
 		}
 		this.balance += amount;
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime(), category));
-	}
-	public void deposit(double amount) {
-		deposit(amount, "General");
 	}
 
 	public void withdraw(double amount, String category) {
@@ -118,13 +115,10 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
-		this.spending=amount;
+		this.spending = amount;
 		this.balance -= amount;
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime(), category));
-	}
-	public void withdraw(double amount) {
-		withdraw(amount, "General");
 	}
 	
 	public double getCurrentBalance() {

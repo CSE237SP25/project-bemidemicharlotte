@@ -57,9 +57,6 @@ public class Menu {
          System.out.println("13. Logout");
          System.out.println("14. Delete Account");
          System.out.println("15. Export Transaction History to File");
-         //Maybe not put it as an option, it makes it look like they want to go back to the sign in page
-         System.out.println("16. Back");
-
     }
     
     public int readIntFromPlayer() {
@@ -113,12 +110,9 @@ public class Menu {
 	        case 14: 
 	        	handleDelete();
 	        	break;
-          case 15:
+	        case 15:
                 handleExportHistory();
                 break;
-	        case 16:
-	        	handleBackToLogin();
-	        	break;
 	        default:
 	        	System.out.println("Invalid choice. Please enter a number between 1 and 14");
 	    }
@@ -129,15 +123,6 @@ public class Menu {
         updateAccountMenu.setAccountNumber(currentAccountNumber);
         //pass in the account number
         while(true) {
-            //back
-            //What if they don't want to go back? This statement doesn't allow them to keep going on with the process
-            System.out.println("Press 0 to go back");
-            int back = keyboardInput.nextInt();
-            keyboardInput.nextLine();
-            if(back==0) {
-            	handleBackToMenu();
-            	break;
-            }
             updateAccountMenu.displayOptions();
             int userChoice = updateAccountMenu.readIntFromPlayer();
             updateAccountMenu.processuserInput(userChoice);
@@ -148,35 +133,30 @@ public class Menu {
             }
         }
     }
+    
     public void handleDelete() {
     	this.accounts.remove(this.currentAccountNumber);
     }
 
     public void displayAccountDetails(int accountNumber) {
-            System.out.println("Account Number: " + accountNumber);
-            System.out.println("Name: " + theAccount.getName());
-            System.out.println("Phone Number: " + theAccount.getPhoneNumber());
-            System.out.println("Email: " + theAccount.getEmail());
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Name: " + theAccount.getName());
+        System.out.println("Phone Number: " + theAccount.getPhoneNumber());
+        System.out.println("Email: " + theAccount.getEmail());
     }
 
     public void handleDeposit() {
-    	System.out.println("Please enter deposit amount: ");
-        double amountToDeposit = keyboardInput.nextDouble();
-        keyboardInput.nextLine();
-
-        System.out.print("Enter category for this deposit: ");
-        String category = keyboardInput.nextLine();
-        theAccount.deposit(amountToDeposit, category);
-        //gets an alert saying we overdeposited by $100 when I deposit 200
-        System.out.println("You deposited $" + amountToDeposit + " into your account under category: " + category);
-        
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        }
+        try {
+        	System.out.print("Enter category for this deposit: ");
+            String category = keyboardInput.nextLine();
+        	System.out.println("Please enter deposit amount: ");
+            double amountToDeposit = keyboardInput.nextDouble();
+            theAccount.deposit(amountToDeposit, category);
+          //gets an alert saying we overdeposited by $100 when I deposit 200
+            System.out.println("You deposited $" + amountToDeposit + " into your account under category: " + category);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Deposit failed: " + e.getMessage());
+        };
     }
     
     public void handleViewProfile() {
@@ -193,29 +173,17 @@ public class Menu {
     }
     
     public void handleWithdrawal() {
-    	System.out.println("Please enter withdrawal amount: ");
-        double amountToWithdraw = keyboardInput.nextDouble();
-        keyboardInput.nextLine();
-
-        System.out.print("Enter category for this withdrawal: ");
-        String category = keyboardInput.nextLine();
-        
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	return;
-        }
-
-        try {
+    	try {
+        	System.out.print("Enter category for this withdrawal: ");
+            String category = keyboardInput.nextLine();
+        	System.out.println("Please enter withdrawal amount: ");
+            double amountToWithdraw = keyboardInput.nextDouble();
             theAccount.withdraw(amountToWithdraw, category);
             System.out.println("You withdrew $" + amountToWithdraw + " from your account under category: " + category);
         } catch (IllegalArgumentException e) {
             System.out.println("Withdrawal failed: " + e.getMessage());
         }
-    }
+    } 
     
     public void processWithdrawal(double amount) {
         theAccount.withdraw(amount, "SomeCategory");
@@ -223,20 +191,15 @@ public class Menu {
     
     public void handleInterest() {
     	while(true) {
-    	fixedDeposit.printTerm();
-    	
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
-        }
-    	int accountTerm = keyboardInput.nextInt();
-    	double accountDeposit = fixedDeposit.getDeposit();
-    	double accountCD = processInterest(accountTerm, accountDeposit);	
-    	System.out.println("You will eventually get $" + accountCD + " from the fixed deposit");
+	    	fixedDeposit.printTerm();
+	    	int accountTerm = keyboardInput.nextInt();
+	    	if(accountTerm==4) {
+	    		handleBackToMenu();
+		        break;
+		    }
+	    	double accountDeposit = fixedDeposit.getDeposit();
+	    	double accountCD = processInterest(accountTerm, accountDeposit);	
+	    	System.out.println("You will eventually get $" + accountCD + " from the fixed deposit");
     	}
     }
     
@@ -252,9 +215,13 @@ public class Menu {
     }
     
    public void handleTransfer() {
-        System.out.println("Enter account number to transfer to: ");
+        System.out.println("Enter account number to transfer to, or 0 to go back: ");
         int receivingAccountNumber = keyboardInput.nextInt();
-        if(this.accounts.containsKey(receivingAccountNumber)){
+        if(receivingAccountNumber==0) {
+        	handleBackToMenu();
+        	return;
+        }
+        if (this.accounts.containsKey(receivingAccountNumber)){
             BankAccount recipientAccount = this.accounts.get(receivingAccountNumber);
             try {
                 System.out.println("Enter amount to transfer: ");
@@ -273,19 +240,15 @@ public class Menu {
   
     public void handleScheduledTransfer() {
     	while(true) {
-        BankAccount recipientAccount = new BankAccount();
-        System.out.print("Enter amount to transfer: ");
-        double amount = keyboardInput.nextDouble();
-        System.out.print("Enter delay time in seconds: ");
-        int delayInSeconds = keyboardInput.nextInt();
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
-        }
+	        BankAccount recipientAccount = new BankAccount();
+	        System.out.print("Enter amount to transfer, or 0 to go back: ");
+	        double amount = keyboardInput.nextDouble();
+	        if(amount==0) {
+	        	handleBackToMenu();
+	        	break;
+	        }
+	        System.out.print("Enter delay time in seconds: ");
+	        int delayInSeconds = keyboardInput.nextInt();
         try {
             theAccount.scheduleTransfer(recipientAccount, amount, delayInSeconds);
             System.out.println("Transfer of $" + amount + " scheduled in " + delayInSeconds + " seconds.");
@@ -297,16 +260,8 @@ public class Menu {
     
     public void handleSetSpendingLimit() {
     	while(true) {
-        System.out.print("Enter your desired spending limit: ");
-        double limit = keyboardInput.nextDouble();
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
-        }
+	        System.out.print("Enter your desired spending limit: ");
+	        double limit = keyboardInput.nextDouble();
         try {
             theAccount.setSpendingLimit(limit);
             System.out.println("Spending limit set to $" + limit);
@@ -318,48 +273,35 @@ public class Menu {
     
     public void handleCategory() {
     	while(true) {
-    	System.out.println("Select a category for you last withdrawal:");
-    	categorizeSpending.viewCategory();
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
-        }
-    	int choice = keyboardInput.nextInt();
-    	categorizeSpending.processCategory(choice);
-    	categorizeSpending.showCategory();
+	    	System.out.println("Select a category for you last withdrawal:");
+	    	categorizeSpending.viewCategory();
+	    	int choice = keyboardInput.nextInt();
+	    	if(choice==6) {
+	        	handleBackToMenu();
+	        	break;
+	        }
+	    	categorizeSpending.processCategory(choice);
+	    	categorizeSpending.showCategory();
     	}
     }
     
     public void handleManagement() {
     	while(true) {
-        System.out.println("Select a goal for your money:");
-        moneyManagement.goalAdvisory();
-        //back
-        System.out.println("Press 0 to go back");
-        int back = keyboardInput.nextInt();
-        keyboardInput.nextLine();
-        if(back==0) {
-        	handleBackToMenu();
-        	break;
-        }
-        int choice = keyboardInput.nextInt();
-        if (choice == 1) {
-            System.out.print("Enter your monthly income: ");
-            double income = keyboardInput.nextDouble();
-            moneyManagement.setIncome(income);
-        }
-        moneyManagement.adviseNavigation(choice);
+    		System.out.println("Select a goal for your money:");
+	        moneyManagement.goalAdvisory();
+	        int choice = keyboardInput.nextInt();
+	        if (choice == 1) {
+	            System.out.print("Enter your monthly income: ");
+	            double income = keyboardInput.nextDouble();
+	            moneyManagement.setIncome(income);
+	        } 
+	        if (choice == 4) {
+	        	handleBackToMenu();
+	        	break;
+	        }
+	        moneyManagement.adviseNavigation(choice);
     	}
     }
-    
-    public void handleBackToLogin() {
-    	login.displayOptions();
-    }
-    
     
     public void handleBackToMenu() {
     	displayOptions();
@@ -371,5 +313,4 @@ public class Menu {
         String filename = keyboardInput.nextLine();
         theAccount.exportTransactionHistory(filename);
     }
-
 }

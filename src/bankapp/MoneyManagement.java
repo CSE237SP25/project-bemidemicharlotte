@@ -16,6 +16,7 @@ public class MoneyManagement {
         System.out.println("1. Save for a home");
         System.out.println("2. Retirement");
         System.out.println("3. Emergency fund");
+        System.out.println("4. Exit");
     }
         
    public void adviseNavigation(int choice) {

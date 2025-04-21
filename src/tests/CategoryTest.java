@@ -12,7 +12,7 @@ public class CategoryTest {
 	    public void testFoodCategorySpending() {
 			BankAccount account = new BankAccount();
 			CategorizeSpending cs = new CategorizeSpending(account); 
-			account.deposit(200);
+			account.deposit(200, "General");
 			account.spending = 100;  
 			cs.processCategory(1);      
 			assertEquals(100, cs.getFoodSpending(), 0.001);

@@ -21,6 +21,7 @@ public class FixedDeposit {
 		System.out.println("1. 7 months");
 		System.out.println("2. 10 months");
 		System.out.println("3. 13 months");
+		System.out.println("4. Exit");
 	}
 
 	public int getTerm() {

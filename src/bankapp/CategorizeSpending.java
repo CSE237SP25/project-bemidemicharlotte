@@ -22,6 +22,7 @@ public class CategorizeSpending {
 		System.out.println("3. Transportation");
 		System.out.println("4. Clothes");
 		System.out.println("5. Other");
+		System.out.println("6. Exit");
 	}
 		
 	public void processCategory(int choice) {

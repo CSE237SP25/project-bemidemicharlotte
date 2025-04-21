@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.*;
 
 
@@ -115,6 +116,18 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
+		
+	    if (amount > 100000) {
+	        Scanner scanner = new Scanner(System.in);
+	        System.out.println("You are attempting to withdraw a large amount: $" + amount);
+	        System.out.print("Type 'yes' to confirm: ");
+	        String input = scanner.nextLine();
+	        if (!input.equalsIgnoreCase("yes")) {
+	            System.out.println("Withdrawal cancelled.");
+	            return;
+	        }
+	    }
+
 		this.spending = amount;
 		this.balance -= amount;
 		trackSpending(category, amount);

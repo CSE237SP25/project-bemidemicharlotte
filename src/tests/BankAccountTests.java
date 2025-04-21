@@ -201,4 +201,38 @@ public class BankAccountTests {
 			fail("Failed to read exported file.");
 		}
 	}
-}
+	
+	 @Test
+	    public void testLargeWithdrawalConfirmed() {
+		 	BankAccount account=new BankAccount();
+		 	
+		 	account.deposit(200000, "Food");
+	        String input = "yes\n"; 
+	        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+	        double originalBalance = account.getCurrentBalance();
+
+	        account.withdraw(150000, "Food");
+	        double expected = originalBalance - 150000;
+
+	        assertEquals(expected, account.getCurrentBalance(), 0.001);
+	    }
+
+	    @Test
+	    public void testLargeWithdrawalCancelled() {
+	    	BankAccount account=new BankAccount();
+	    	
+		 	account.deposit(200000, "Food");
+	        String input = "no\n"; 
+	        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+	        double originalBalance = account.getCurrentBalance();
+
+	        account.withdraw(150000, "Food");
+
+	        
+	        assertEquals(originalBalance, account.getCurrentBalance(), 0.001);
+	    }
+		
+	}
+

@@ -51,7 +51,6 @@ public class FixedDeposit {
 		}
 		
 		deposit = userDeposit * Math.pow((1 + interestRate), month);
-		//System.out.printf("Final amount after %d months: $%.2f\n", month, deposit);
 	}
 
 	public double getFinalDeposit() {

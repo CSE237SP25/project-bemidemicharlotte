@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.*;
 
-
 public class BankAccount {
 
 	private double balance;
@@ -20,88 +19,90 @@ public class BankAccount {
 	private List<Transaction> transactionHistory;
 	private Map<String, SpendingCategory> categoryMap;
 	private String email;
-    private String phoneNumber;
-    private int accountNumber;
-    private String name;
-    private String password;
+	private String phoneNumber;
+	private int accountNumber;
+	private String name;
+	private String password;
 	private String securityQuestion;
 	private String securityAnswer;
-    private Map<Integer, List<Object>> accounts;
+	private Map<Integer, List<Object>> accounts;
+	private AccountFreeze freezeStatus;
 
 	public BankAccount() {
 		this.balance = 0;
 		this.spendingLimit = Double.MAX_VALUE;
-		this.spending=0;
+		this.spending = 0;
 		this.transactionHistory = new ArrayList<>();
 		this.categoryMap = new HashMap<>();
+		this.freezeStatus = new AccountFreeze();
 	}
 
 	public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
-    public void setEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
+	public void setEmail(String email) {
+		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+		Pattern pattern = Pattern.compile(emailRegex);
+		Matcher matcher = pattern.matcher(email);
 
-        if (matcher.matches()) {
-            this.email = email;
-        } else {
-            throw new IllegalArgumentException("Invalid email format.");
-        }
-    }
+		if (matcher.matches()) {
+			this.email = email;
+		} else {
+			throw new IllegalArgumentException("Invalid email format.");
+		}
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        String phoneRegex = "^(\\+\\d{1,3}\\s?)?(\\(\\d{3}\\)|\\d{3})[-.\\s]?\\d{3}[-.\\s]?\\d{4}$";
-        Pattern pattern = Pattern.compile(phoneRegex);
-        Matcher matcher = pattern.matcher(phoneNumber);
+	public void setPhoneNumber(String phoneNumber) {
+		String phoneRegex = "^(\\+\\d{1,3}\\s?)?(\\(\\d{3}\\)|\\d{3})[-.\\s]?\\d{3}[-.\\s]?\\d{4}$";
+		Pattern pattern = Pattern.compile(phoneRegex);
+		Matcher matcher = pattern.matcher(phoneNumber);
 
-        if (matcher.matches()) {
-            this.phoneNumber = phoneNumber;
-        } else {
-            throw new IllegalArgumentException("Invalid phone number format.");
-        }
-    }
+		if (matcher.matches()) {
+			this.phoneNumber = phoneNumber;
+		} else {
+			throw new IllegalArgumentException("Invalid phone number format.");
+		}
+	}
 
-    public void setPassword(String password){
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-	public void setSecurityQuestion(String question){
+	public void setSecurityQuestion(String question) {
 		this.securityQuestion = question;
 	}
 
-	public void setAnswer(String answer){
+	public void setAnswer(String answer) {
 		this.securityAnswer = answer.toLowerCase();
 	}
 
-    public String getName(){
-        return this.name;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public String getPhoneNumber(){
-        return this.phoneNumber;
-    }
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
 
-    public String getEmail(){
-        return this.email;
-    }
+	public String getEmail() {
+		return this.email;
+	}
 
-	public String getPassword(){
+	public String getPassword() {
 		return this.password;
 	}
 
-	public String getSecurityQuestion(){
+	public String getSecurityQuestion() {
 		return this.securityQuestion;
 	}
 
-	public String getSecurityAnswer(){
+	public String getSecurityAnswer() {
 		return this.securityAnswer;
 	}
-	
+
 	public void deposit(double amount, String category) {
-		if(amount < 0) {
+		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot deposit a negative amount.");
 		}
 		this.balance += amount;
@@ -110,61 +111,67 @@ public class BankAccount {
 	}
 
 	public void withdraw(double amount, String category) {
-		if (amount > balance)   {
-			 throw new IllegalArgumentException("Insufficient funds.");
-		} 
+		if (freezeStatus.isFrozen()) {
+			throw new IllegalArgumentException("Account is frozen. Withdrawals are not allowed.");
+		}
+		if (amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds.");
+		}
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
-		
-	    if (amount > 100000) {
-	        Scanner scanner = new Scanner(System.in);
-	        System.out.println("You are attempting to withdraw a large amount: $" + amount);
-	        System.out.print("Type 'yes' to confirm: ");
-	        String input = scanner.nextLine();
-	        if (!input.equalsIgnoreCase("yes")) {
-	            System.out.println("Withdrawal cancelled.");
-	            return;
-	        }
-	    }
+
+		if (amount > 1000) {
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("You are attempting to withdraw a large amount: $" + amount);
+			System.out.print("Type 'yes' to confirm: ");
+			String input = scanner.nextLine();
+			if (!input.equalsIgnoreCase("yes")) {
+				System.out.println("Withdrawal cancelled.");
+				return;
+			}
+		}
 
 		this.spending = amount;
 		this.balance -= amount;
 		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Withdrawal", amount, getCurrentTime(), category));
 	}
-	
+
 	public double getCurrentBalance() {
 		return this.balance;
 	}
-	
+
 	public String getCurrentTime() {
 		SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm:ss a");
-        return localDateFormat.format(new Date());
+		return localDateFormat.format(new Date());
 	}
 
 	public double getFinalBalance(FixedDeposit fixedDeposit) {
-		transactionHistory.add(new Transaction("Fixed Deposit", fixedDeposit.getFinalDeposit(), getCurrentTime(), "Investment"));
+		transactionHistory
+				.add(new Transaction("Fixed Deposit", fixedDeposit.getFinalDeposit(), getCurrentTime(), "Investment"));
 		return this.balance + fixedDeposit.getFinalDeposit();
 	}
 
 	public int getTransactionCount() {
-	    return transactionHistory.size();
+		return transactionHistory.size();
 	}
-	
+
 	public void viewTransactionHistory() {
 		if (getTransactionCount() == 0) {
 			System.out.println("No recent transaction history");
-		}
-		else {
+		} else {
 			System.out.println("Your Recent Transaction History:");
-			for (Transaction t: transactionHistory) {
+			for (Transaction t : transactionHistory) {
 				t.showTransaction();
 			}
 		}
 	}
 
 	public void transferTo(BankAccount recipient, double amount) {
+		if (freezeStatus.isFrozen()) {
+			throw new IllegalArgumentException("Account is frozen. Transfers are not allowed.");
+		}
 		if (amount <= 0) {
 			throw new IllegalArgumentException("Transfer amount must be positive.");
 		}
@@ -172,15 +179,14 @@ public class BankAccount {
 			throw new IllegalArgumentException("Insufficient funds.");
 		}
 
-		//calling withdraw and deposit already adds to the transaction history, adding again is redundant
 		this.withdraw(amount, "Transfer Sent");
 		recipient.deposit(amount, "Transfer Received");
-
-		this.transactionHistory.add(new Transaction("Transfer Sent", amount, getCurrentTime(), "Tansfer"));
-		recipient.transactionHistory.add(new Transaction("Transfer Received", amount, getCurrentTime(), "Transfer"));
 	}
 
 	public void scheduleTransfer(BankAccount recipient, double amount, int delayInSeconds) {
+		if (freezeStatus.isFrozen()) {
+			throw new IllegalArgumentException("Account is frozen. Transfers are not allowed.");
+		}
 		if (amount <= 0) {
 			throw new IllegalArgumentException("Transfer amount must be positive.");
 		}
@@ -199,7 +205,7 @@ public class BankAccount {
 			}
 		}).start();
 	}
-	
+
 	public void setSpendingLimit(double limit) {
 		if (limit < 0) {
 			throw new IllegalArgumentException("Spending limit must be non-negative.");
@@ -215,9 +221,11 @@ public class BankAccount {
 		cat.addSpending(amount);
 
 		if (cat.isOverLimit()) {
-			System.out.println("Alert: You’ve exceeded your $" + cat.getThreshold() + " limit for " + category + " spending.");
+			System.out.println(
+					"Alert: You’ve exceeded your $" + cat.getThreshold() + " limit for " + category + " spending.");
 		}
 	}
+
 	public void exportTransactionHistory(String filename) {
 		try (FileWriter writer = new FileWriter(filename)) {
 			if (transactionHistory.isEmpty()) {
@@ -232,5 +240,9 @@ public class BankAccount {
 		} catch (IOException e) {
 			System.out.println("Error exporting: " + e.getMessage());
 		}
+	}
+
+	public AccountFreeze getFreezeStatus() {
+		return freezeStatus;
 	}
 }

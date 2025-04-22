@@ -1,3 +1,0 @@
-Transaction History:
-[9:19:49 PM] Deposit: $100.0 (Category: Test)
-[9:19:49 PM] Withdrawal: $20.0 (Category: Test)

@@ -57,6 +57,8 @@ public class Menu {
          System.out.println("13. Logout");
          System.out.println("14. Delete Account");
          System.out.println("15. Export Transaction History to File");
+         System.out.println("16. Back to Login Menu");
+         
     }
     
     public int readIntFromPlayer() {
@@ -113,6 +115,8 @@ public class Menu {
 	        case 15:
                 handleExportHistory();
                 break;
+	        case 16:
+	        	handleBackToLogIn();
 	        default:
 	        	System.out.println("Invalid choice. Please enter a number between 1 and 14");
 	    }
@@ -148,6 +152,7 @@ public class Menu {
     public void handleDeposit() {
         try {
         	System.out.print("Enter category for this deposit: ");
+        	categorizeSpending.viewCategory();
             String category = keyboardInput.nextLine();
         	System.out.println("Please enter deposit amount: ");
             double amountToDeposit = keyboardInput.nextDouble();
@@ -305,6 +310,10 @@ public class Menu {
     
     public void handleBackToMenu() {
     	displayOptions();
+    }
+    
+    public void handleBackToLogIn() {
+    	login.displayOptions();
     }
 
     public void handleExportHistory() {

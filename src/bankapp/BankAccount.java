@@ -119,7 +119,9 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new IllegalArgumentException("You cannot withdraw a negative amount.");
 		}
-
+		if (amount > spendingLimit) {
+			throw new IllegalArgumentException("Amount exceeds your spending limit.");
+		}
 		if (amount > 1000) {
 			Scanner scanner = new Scanner(System.in);
 			System.out.println("You are attempting to withdraw a large amount: $" + amount);

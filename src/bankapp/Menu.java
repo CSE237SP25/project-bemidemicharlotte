@@ -276,11 +276,16 @@ public class Menu {
 
 	public void handleSetSpendingLimit() {
 		while (true) {
-			System.out.print("Enter your desired spending limit: ");
+			System.out.print("Enter your desired spending limit, or 0 to go back: ");
 			double limit = keyboardInput.nextDouble();
+			if (limit == 0) {
+				handleBackToMenu();
+				return;
+			}
 			try {
 				theAccount.setSpendingLimit(limit);
 				System.out.println("Spending limit set to $" + limit);
+				return;
 			} catch (IllegalArgumentException e) {
 				System.out.println("Failed to set limit: " + e.getMessage());
 			}

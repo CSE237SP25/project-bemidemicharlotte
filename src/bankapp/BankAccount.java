@@ -106,7 +106,6 @@ public class BankAccount {
 			throw new IllegalArgumentException("You cannot deposit a negative amount.");
 		}
 		this.balance += amount;
-		trackSpending(category, amount);
 		transactionHistory.add(new Transaction("Deposit", amount, getCurrentTime(), category));
 	}
 
@@ -215,7 +214,7 @@ public class BankAccount {
 
 	public void trackSpending(String category, double amount) {
 		if (!categoryMap.containsKey(category)) {
-			categoryMap.put(category, new SpendingCategory(category, 100));
+			categoryMap.put(category, new SpendingCategory(category, spendingLimit));
 		}
 		SpendingCategory cat = categoryMap.get(category);
 		cat.addSpending(amount);

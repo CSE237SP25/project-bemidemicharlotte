@@ -42,9 +42,9 @@ public class SpendingCategoryManager {
 	public double getOtherSpending() { return other; }
 	
 	public void showCategory() {
-	    System.out.println("You spend $"+food+"on food");
-	    System.out.println("You spend $"+groceries+"on groceries");
-	    System.out.println("You spend $"+transportation+"on transportation");
-	    System.out.println("You spend $"+clothes+"on clothes");
+	    System.out.println("You spend $"+food+" on food");
+	    System.out.println("You spend $"+groceries+" on groceries");
+	    System.out.println("You spend $"+transportation+" on transportation");
+	    System.out.println("You spend $"+clothes+" on clothes");
 	}
 }

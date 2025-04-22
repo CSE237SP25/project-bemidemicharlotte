@@ -233,6 +233,5 @@ public class BankAccountTests {
 	        
 	        assertEquals(originalBalance, account.getCurrentBalance(), 0.001);
 	    }
-		
 	}
 

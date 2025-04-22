@@ -1,20 +1,19 @@
 package bankapp;
 import java.util.Scanner;
-public class CategorizeSpending {
+public class SpendingCategoryManager {
 	
 	private BankAccount theAccount;
-	
 	private double food=0;
 	private double groceries=0;
 	private double transportation=0;
 	private double clothes=0;
 	private double other=0;
 	private Scanner keyboardInput;
-	public CategorizeSpending(BankAccount account) {
+	
+	public SpendingCategoryManager(BankAccount account) {
 		this.theAccount= account;
 		keyboardInput = new Scanner(System.in);
 	}
-	
 	
 	public void viewCategory() {
 		System.out.println("1. Food");

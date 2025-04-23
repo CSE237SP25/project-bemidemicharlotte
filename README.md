@@ -30,6 +30,8 @@ What user stories do you intend to complete next iteration (3)?
 * Customer can freeze their account (i.e. cannot withdraw funds or transfer funds)
 * Customer should be able to confirm their transaction amount when withdrawing a large amount of money
 * User should be able to exit or go back to the previous page at any step in the bank process
+* A user should be able to export their transaction history as a text file
+* A user should be able to set spending alerts by category
 
 Is there anything that you implemented but doesn't currently work?
 
@@ -39,4 +41,4 @@ What commands are needed to compile and run your code from the command line (ple
 
 First set file permissions: ```chmod 755 script.sh```
 
-``` ./script.sh ```
+Run the script: ``` ./script.sh ```

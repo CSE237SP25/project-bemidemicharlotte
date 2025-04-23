@@ -1,7 +1,8 @@
 package tests;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import bankapp.CategorizeSpending;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import bankapp.SpendingCategoryManager;
 import bankapp.BankAccount;
 public class CategoryTest {
 	
@@ -10,8 +11,8 @@ public class CategoryTest {
 	 @Test
 	    public void testFoodCategorySpending() {
 			BankAccount account = new BankAccount();
-			CategorizeSpending cs = new CategorizeSpending(account); 
-			account.deposit(200);
+			SpendingCategoryManager cs = new SpendingCategoryManager(account); 
+			account.deposit(200, "General");
 			account.spending = 100;  
 			cs.processCategory(1);      
 			assertEquals(100, cs.getFoodSpending(), 0.001);
@@ -21,8 +22,8 @@ public class CategoryTest {
 	 @Test
 	    public void testMultipleCategorySpending() {
 			BankAccount account = new BankAccount();
-			CategorizeSpending cs = new CategorizeSpending(account); 
-			account.deposit(200);
+			SpendingCategoryManager cs = new SpendingCategoryManager(account); 
+			account.deposit(200, "General");
 			
 			account.spending = 100;  
 			cs.processCategory(4);  

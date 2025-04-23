@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import bankapp.BankAccount;
 import bankapp.FixedDeposit;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class BankAccountTests {
 
 	@Test
@@ -19,7 +23,7 @@ public class BankAccountTests {
 		BankAccount account = new BankAccount();
 		
 		//2. Call the method being tested
-		account.deposit(25);
+		account.deposit(25, "General");
 		
 		//3. Use assertions to verify results
 		assertEquals(account.getCurrentBalance(), 25.0, 0.005);
@@ -31,7 +35,7 @@ public class BankAccountTests {
 		BankAccount account = new BankAccount();
 
 		try {
-			account.deposit(-25);
+			account.deposit(-25, "General");
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertTrue(e != null);
@@ -41,8 +45,8 @@ public class BankAccountTests {
 	@Test
 	public void testSimpleWithdraw() {
 		BankAccount account = new BankAccount();
-		account.deposit(25.0);
-		account.withdraw(10.0);
+		account.deposit(25.0, "General");
+		account.withdraw(10.0, "General");
 		assertEquals(account.getCurrentBalance(), 15.0, 0.005);
 	}
 	
@@ -50,7 +54,7 @@ public class BankAccountTests {
 	public void testNegativeWithdraw() {
 		BankAccount account = new BankAccount();
 		try {
-			account.withdraw(-5);
+			account.withdraw(-5, "General");
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertTrue(e != null);
@@ -60,9 +64,9 @@ public class BankAccountTests {
 	@Test
 	public void testInsufficientWithdraw() {
 		BankAccount account = new BankAccount();
-		account.deposit(10);
+		account.deposit(10, "General");
 		try {
-			account.withdraw(15);
+			account.withdraw(15, "General");
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertTrue(e != null);
@@ -73,7 +77,7 @@ public class BankAccountTests {
 	public void testFinalBalance() {
 		// Step 1: Set up the account and deposit
         BankAccount account = new BankAccount();
-        account.deposit(1000); 
+        account.deposit(1000, "General"); 
         // Step 2: Create and process a fixed deposit
         FixedDeposit fd = new FixedDeposit();
         fd.processSelection(1, 2000); 
@@ -89,7 +93,7 @@ public class BankAccountTests {
 		BankAccount sender = new BankAccount();
 		BankAccount receiver = new BankAccount();
 
-		sender.deposit(100);
+		sender.deposit(100, "General");
 		sender.transferTo(receiver, 40);
 
 		assertEquals(60.0, sender.getCurrentBalance(), 0.005);
@@ -101,7 +105,7 @@ public class BankAccountTests {
 		BankAccount sender = new BankAccount();
 		BankAccount receiver = new BankAccount();
 
-		sender.deposit(30);
+		sender.deposit(30, "General");
 
 		try {
 			sender.transferTo(receiver, 50);
@@ -116,7 +120,7 @@ public class BankAccountTests {
 		BankAccount sender = new BankAccount();
 		BankAccount receiver = new BankAccount();
 
-		sender.deposit(100);
+		sender.deposit(100, "General");
 
 		try {
 			sender.transferTo(receiver, -20);
@@ -131,7 +135,7 @@ public class BankAccountTests {
 		BankAccount sender = new BankAccount();
 		BankAccount receiver = new BankAccount();
 
-		sender.deposit(100);
+		sender.deposit(100, "General");
 		sender.scheduleTransfer(receiver, 40, 2);
 		Thread.sleep(3000);
 
@@ -144,11 +148,11 @@ public class BankAccountTests {
 	@Test
 	public void testSpendingLimitBlocksWithdrawal() {
 		BankAccount account = new BankAccount();
-		account.deposit(100);
+		account.deposit(100, "General");
 		account.setSpendingLimit(30);
 
 		try {
-			account.withdraw(50);
+			account.withdraw(50, "General");
 			fail("Withdrawal over limit should have failed.");
 		} catch (IllegalArgumentException e) {
 			assertEquals("Amount exceeds your spending limit.", e.getMessage());
@@ -158,11 +162,76 @@ public class BankAccountTests {
 	@Test
 	public void testSpendingLimitAllowsValidWithdrawal() {
 		BankAccount account = new BankAccount();
-		account.deposit(100);
+		account.deposit(100, "General");
 		account.setSpendingLimit(80);
 
-		account.withdraw(50);
+		account.withdraw(50, "General");
 		assertEquals(50.0, account.getCurrentBalance(), 0.005);
 	}
 
-}
+	@Test
+	public void testCategoryAlertTriggered() {
+		BankAccount account = new BankAccount();
+		account.deposit(50, "Food");
+		account.deposit(60, "Food");
+		assertEquals(110.0, account.getCurrentBalance(), 0.005);
+	}
+
+	@Test
+	public void testCategoryTotalTracksCorrectly() {
+		BankAccount account = new BankAccount();
+		account.deposit(40, "Travel");
+		account.deposit(30, "Travel");
+		assertEquals(70.0, account.getCurrentBalance(), 0.005);
+	}
+
+	@Test
+	public void testExportTransactionHistory() {
+		BankAccount account = new BankAccount();
+		account.deposit(100, "Test");
+		account.withdraw(20, "Test");
+
+		String filename = "test_history_output.txt";
+		account.exportTransactionHistory(filename);
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+			String content = reader.readLine();
+			assertTrue(content.contains("Transaction History") || content.contains("Deposit") || content.contains("Withdrawal"));
+		} catch (IOException e) {
+			fail("Failed to read exported file.");
+		}
+	}
+	
+	 @Test
+	    public void testLargeWithdrawalConfirmed() {
+		 	BankAccount account=new BankAccount();
+		 	
+		 	account.deposit(200000, "Food");
+	        String input = "yes\n"; 
+	        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+	        double originalBalance = account.getCurrentBalance();
+
+	        account.withdraw(150000, "Food");
+	        double expected = originalBalance - 150000;
+
+	        assertEquals(expected, account.getCurrentBalance(), 0.001);
+	    }
+
+	    @Test
+	    public void testLargeWithdrawalCancelled() {
+	    	BankAccount account=new BankAccount();
+	    	
+		 	account.deposit(200000, "Food");
+	        String input = "no\n"; 
+	        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+	        double originalBalance = account.getCurrentBalance();
+
+	        account.withdraw(150000, "Food");
+
+	        
+	        assertEquals(originalBalance, account.getCurrentBalance(), 0.001);
+	    }
+	}
+

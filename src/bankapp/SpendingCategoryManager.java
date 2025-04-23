@@ -1,20 +1,19 @@
 package bankapp;
 import java.util.Scanner;
-public class CategorizeSpending {
+public class SpendingCategoryManager {
 	
 	private BankAccount theAccount;
-	
 	private double food=0;
 	private double groceries=0;
 	private double transportation=0;
 	private double clothes=0;
 	private double other=0;
 	private Scanner keyboardInput;
-	public CategorizeSpending(BankAccount account) {
+	
+	public SpendingCategoryManager(BankAccount account) {
 		this.theAccount= account;
 		keyboardInput = new Scanner(System.in);
 	}
-	
 	
 	public void viewCategory() {
 		System.out.println("1. Food");
@@ -22,6 +21,7 @@ public class CategorizeSpending {
 		System.out.println("3. Transportation");
 		System.out.println("4. Clothes");
 		System.out.println("5. Other");
+		System.out.println("6. Exit");
 	}
 		
 	public void processCategory(int choice) {
@@ -42,9 +42,9 @@ public class CategorizeSpending {
 	public double getOtherSpending() { return other; }
 	
 	public void showCategory() {
-	    System.out.println("You spend $"+food+"on food");
-	    System.out.println("You spend $"+groceries+"on groceries");
-	    System.out.println("You spend $"+transportation+"on transportation");
-	    System.out.println("You spend $"+clothes+"on clothes");
+	    System.out.println("You spend $"+food+" on food");
+	    System.out.println("You spend $"+groceries+" on groceries");
+	    System.out.println("You spend $"+transportation+" on transportation");
+	    System.out.println("You spend $"+clothes+" on clothes");
 	}
 }

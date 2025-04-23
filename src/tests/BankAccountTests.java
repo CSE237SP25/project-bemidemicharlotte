@@ -233,5 +233,47 @@ public class BankAccountTests {
 	        
 	        assertEquals(originalBalance, account.getCurrentBalance(), 0.001);
 	    }
+
+		@Test
+		public void testSetName() {
+			BankAccount account=new BankAccount();
+			account.setName("Alice");
+			assertEquals("Alice", account.getName());
+		}
+
+		@Test
+		public void testSetEmail() {
+			BankAccount account=new BankAccount();
+			account.setEmail("alice@example.com");
+			assertEquals("alice@example.com", account.getEmail());
+		}
+
+		@Test
+		public void testSetPhoneNumber() {
+			BankAccount account=new BankAccount();
+			account.setPhoneNumber("1234567890");
+			assertEquals("1234567890", account.getPhoneNumber());
+		}
+
+		@Test
+		public void testSetPassword() {
+			BankAccount account=new BankAccount();
+			account.setPassword("secret");
+			assertEquals("secret", account.getPassword());
+		}
+
+		@Test
+		public void testSetSecurityQuestion() {
+			BankAccount account=new BankAccount();
+			account.setSecurityQuestion("Favorite color?");
+			assertEquals("Favorite color?", account.getSecurityQuestion());
+		}
+
+		@Test
+		public void testSetSecurityAnswer() {
+			BankAccount account=new BankAccount();
+			account.setAnswer("blue");
+			assertEquals("blue", account.getSecurityAnswer());
+		}
 	}
 

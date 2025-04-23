@@ -155,10 +155,9 @@ public class Menu {
 
 	public void handleDeposit() {
 		try {
-			System.out.print("Enter category for this deposit, or 0 to go back");
+			System.out.print("Enter category for this deposit, or 0 to go back: ");
 			String category = keyboardInput.nextLine();
 			if (category.equals("0")) {
-				handleBackToMenu();
 				return;
 			}
 			System.out.println("Please enter deposit amount: ");
@@ -188,7 +187,6 @@ public class Menu {
 			System.out.print("Enter category for this withdrawal, or 0 to go back: ");
 			String category = keyboardInput.nextLine();
 			if (category.equals("0")) {
-				handleBackToMenu();
 				return;
 			}
 			System.out.println("Please enter withdrawal amount: ");
@@ -209,7 +207,6 @@ public class Menu {
 			fixedDeposit.printTerm();
 			int accountTerm = keyboardInput.nextInt();
 			if (accountTerm == 4) {
-				handleBackToMenu();
 				break;
 			}
 			double accountDeposit = fixedDeposit.getDeposit();
@@ -238,7 +235,6 @@ public class Menu {
 		System.out.println("Enter account number to transfer to, or 0 to go back: ");
 		int receivingAccountNumber = keyboardInput.nextInt();
 		if (receivingAccountNumber == 0) {
-			handleBackToMenu();
 			return;
 		}
 		if (this.accounts.containsKey(receivingAccountNumber)) {
@@ -268,7 +264,6 @@ public class Menu {
 		System.out.print("Enter amount to transfer, or Enter 0 to go back: ");
 		double amount = keyboardInput.nextDouble();
 		if (amount == 0) {
-			handleBackToMenu();
 			return;
 		}
 		System.out.print("Enter delay time in seconds: ");
@@ -286,7 +281,6 @@ public class Menu {
 			System.out.print("Enter your desired spending limit, or 0 to go back: ");
 			double limit = keyboardInput.nextDouble();
 			if (limit == 0) {
-				handleBackToMenu();
 				return;
 			}
 			try {
@@ -305,7 +299,6 @@ public class Menu {
 			categorizeSpending.viewCategory();
 			int choice = keyboardInput.nextInt();
 			if (choice == 6) {
-				handleBackToMenu();
 				break;
 			}
 			categorizeSpending.processCategory(choice);
@@ -324,7 +317,6 @@ public class Menu {
 				moneyManagement.setIncome(income);
 			}
 			if (choice == 4) {
-				handleBackToMenu();
 				break;
 			}
 			moneyManagement.adviseNavigation(choice);
@@ -336,9 +328,12 @@ public class Menu {
 	}
 
 	public void handleExportHistory() {
-		System.out.print("Enter a filename to save history (e.g. history.txt): ");
-		keyboardInput.nextLine();
+		System.out.print("Enter a filename to save history (e.g. history.txt) or Press 0 to go back: ");
+		// keyboardInput.nextLine();
 		String filename = keyboardInput.nextLine();
+		if(filename.equals("0")){
+			return;
+		}
 		theAccount.exportTransactionHistory(filename);
 	}
 

@@ -155,8 +155,12 @@ public class Menu {
 
 	public void handleDeposit() {
 		try {
-			System.out.print("Enter category for this deposit: ");
+			System.out.print("Enter category for this deposit, or 0 to go back");
 			String category = keyboardInput.nextLine();
+			if (category.equals("0")) {
+				handleBackToMenu();
+				return;
+			}
 			System.out.println("Please enter deposit amount: ");
 			double amountToDeposit = keyboardInput.nextDouble();
 			theAccount.deposit(amountToDeposit, category);
@@ -164,7 +168,6 @@ public class Menu {
 		} catch (IllegalArgumentException e) {
 			System.out.println("Deposit failed: " + e.getMessage());
 		}
-		;
 	}
 
 	public void handleViewProfile() {
@@ -182,8 +185,12 @@ public class Menu {
 
 	public void handleWithdrawal() {
 		try {
-			System.out.print("Enter category for this withdrawal: ");
+			System.out.print("Enter category for this withdrawal, or 0 to go back: ");
 			String category = keyboardInput.nextLine();
+			if (category.equals("0")) {
+				handleBackToMenu();
+				return;
+			}
 			System.out.println("Please enter withdrawal amount: ");
 			double amountToWithdraw = keyboardInput.nextDouble();
 			theAccount.withdraw(amountToWithdraw, category);
@@ -258,7 +265,7 @@ public class Menu {
 			return;
 		}
 		BankAccount recipientAccount = new BankAccount();
-		System.out.print("Enter amount to transfer, or 0 to go back: ");
+		System.out.print("Enter amount to transfer, or Enter 0 to go back: ");
 		double amount = keyboardInput.nextDouble();
 		if (amount == 0) {
 			handleBackToMenu();
